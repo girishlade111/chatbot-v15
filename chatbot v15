@@ -8,7 +8,8 @@ import { Input } from "/components/ui/input"
 type Message = {
   id: string
   content: string
-  role: 'user' | 'assistant'
+  role: 'user' | 'assistant' | 'thinking'
+  isStreaming?: boolean
 }
 
 type Conversation = {
@@ -20,6 +21,36 @@ type Conversation = {
 
 const GEMINI_API_KEY = 'AIzaSyDK68voN4wRnCh95nrlu0m9vHbtJKOECqM'
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`
+
+// Thinking animation component
+const ThinkingAnimation = () => {
+  return (
+    <div className="flex space-x-1 items-center">
+      <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0ms' }} />
+      <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '150ms' }} />
+      <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+    </div>
+  )
+}
+
+// Text streaming component
+const StreamingText = ({ text }: { text: string }) => {
+  const [displayedText, setDisplayedText] = useState('')
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    if (currentIndex < text.length) {
+      const timeout = setTimeout(() => {
+        setDisplayedText(prev => prev + text[currentIndex])
+        setCurrentIndex(prev => prev + 1)
+      }, 20) // Adjust speed here (lower = faster)
+
+      return () => clearTimeout(timeout)
+    }
+  }, [currentIndex, text])
+
+  return <>{displayedText}</>
+}
 
 export default function GirishAIAssistant() {
   const [conversations, setConversations] = useState<Conversation[]>(() => {
@@ -85,11 +116,18 @@ export default function GirishAIAssistant() {
       role: 'user'
     }
 
+    // Add thinking message
+    const thinkingMessage: Message = {
+      id: `thinking-${Date.now()}`,
+      content: '',
+      role: 'thinking'
+    }
+
     const updatedConversations = conversations.map(conv => {
       if (conv.id === currentConversationId) {
         return {
           ...conv,
-          messages: [...conv.messages, userMessage],
+          messages: [...conv.messages, userMessage, thinkingMessage],
           title: conv.messages.length === 1 ? input.slice(0, 30) : conv.title
         }
       }
@@ -101,32 +139,38 @@ export default function GirishAIAssistant() {
 
     try {
       const response = await generateContent(input)
-      const assistantMessage: Message = {
-        id: Date.now().toString(),
-        content: response,
-        role: 'assistant'
-      }
+      
+      // Remove thinking message and add assistant response with streaming flag
       setConversations(prev => prev.map(conv => {
         if (conv.id === currentConversationId) {
           return {
             ...conv,
-            messages: [...conv.messages, assistantMessage]
+            messages: conv.messages
+              .filter(msg => msg.role !== 'thinking')
+              .concat({
+                id: Date.now().toString(),
+                content: response,
+                role: 'assistant',
+                isStreaming: true
+              })
           }
         }
         return conv
       }))
     } catch (error) {
       console.error('Error generating response:', error)
-      const errorMessage: Message = {
-        id: Date.now().toString(),
-        content: "Sorry, I couldn't generate a response. Please try again.",
-        role: 'assistant'
-      }
+      // Remove thinking message and add error message
       setConversations(prev => prev.map(conv => {
         if (conv.id === currentConversationId) {
           return {
             ...conv,
-            messages: [...conv.messages, errorMessage]
+            messages: conv.messages
+              .filter(msg => msg.role !== 'thinking')
+              .concat({
+                id: Date.now().toString(),
+                content: "Sorry, I couldn't generate a response. Please try again.",
+                role: 'assistant'
+              })
           }
         }
         return conv
@@ -247,26 +291,24 @@ export default function GirishAIAssistant() {
                   <div className={`flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center ${message.role === 'user' ? 'bg-blue-500 text-white ml-3' : 'bg-gray-200 text-gray-700 mr-3'}`}>
                     {message.role === 'user' ? <User className="h-5 w-5" /> : <Bot className="h-5 w-5" />}
                   </div>
-                  <div className={`px-4 py-3 rounded-lg ${message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-white border text-gray-800'}`}>
-                    {message.content.split('\n').map((paragraph, i) => (
-                      <p key={i} className="mb-2 last:mb-0">{paragraph}</p>
-                    ))}
+                  <div className={`px-4 py-3 rounded-lg ${message.role === 'user' ? 'bg-blue-500 text-white' : message.role === 'thinking' ? 'bg-white border text-gray-800' : 'bg-white border text-gray-800'}`}>
+                    {message.role === 'thinking' ? (
+                      <ThinkingAnimation />
+                    ) : message.isStreaming ? (
+                      message.content.split('\n').map((paragraph, i) => (
+                        <p key={i} className="mb-2 last:mb-0">
+                          <StreamingText text={paragraph} />
+                        </p>
+                      ))
+                    ) : (
+                      message.content.split('\n').map((paragraph, i) => (
+                        <p key={i} className="mb-2 last:mb-0">{paragraph}</p>
+                      ))
+                    )}
                   </div>
                 </div>
               </div>
             ))}
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="flex max-w-3xl">
-                  <div className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center bg-gray-200 text-gray-700 mr-3">
-                    <Bot className="h-5 w-5" />
-                  </div>
-                  <div className="px-4 py-3 rounded-lg bg-white border text-gray-800">
-                    <Loader2 className="animate-spin h-5 w-5" />
-                  </div>
-                </div>
-              </div>
-            )}
             <div ref={messagesEndRef} />
           </div>
         </main>
