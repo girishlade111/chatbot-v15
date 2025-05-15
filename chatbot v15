@@ -21,14 +21,14 @@ type Conversation = {
 const GEMINI_API_KEY = 'AIzaSyDK68voN4wRnCh95nrlu0m9vHbtJKOECqM'
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`
 
-export default function GeminiChatbot() {
+export default function GirishAIAssistant() {
   const [conversations, setConversations] = useState<Conversation[]>(() => {
     return [{
       id: '1',
       title: 'New conversation',
       messages: [{
         id: '1',
-        content: 'Hello! I\'m your AI assistant powered by Gemini. How can I help you today?',
+        content: 'Hello! I\'m Girish AI Assistant, powered by Gemini. How can I help you today?',
         role: 'assistant'
       }],
       createdAt: new Date()
@@ -142,7 +142,7 @@ export default function GeminiChatbot() {
       title: 'New conversation',
       messages: [{
         id: '1',
-        content: 'Hello! I\'m your AI assistant powered by Gemini. How can I help you today?',
+        content: 'Hello! I\'m Girish AI Assistant, powered by Gemini. How can I help you today?',
         role: 'assistant'
       }],
       createdAt: new Date()
@@ -235,7 +235,7 @@ export default function GeminiChatbot() {
           >
             <Menu className="h-6 w-6" />
           </Button>
-          <h1 className="text-xl font-semibold">Gemini AI Assistant</h1>
+          <h1 className="text-xl font-semibold">Girish AI Assistant</h1>
         </header>
 
         {/* Messages container */}
