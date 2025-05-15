@@ -1,15 +1,24 @@
 import { useState, useRef, useEffect } from 'react'
-import { Send, User, Bot, Loader2, Plus, Clock3, Menu, Search } from 'lucide-react'
+import { Send, User, Bot, Loader2, Plus, Clock3, Menu, Search, Paperclip } from 'lucide-react'
 import { Textarea } from "/components/ui/textarea"
 import { Button } from "/components/ui/button"
 import { Separator } from "/components/ui/separator"
 import { Input } from "/components/ui/input"
+import { Popover, PopoverTrigger, PopoverContent } from "/components/ui/popover"
 
 type Message = {
   id: string
   content: string
   role: 'user' | 'assistant' | 'thinking'
   isStreaming?: boolean
+  attachments?: Attachment[]
+}
+
+type Attachment = {
+  id: string
+  name: string
+  type: 'image' | 'document' | 'audio' | 'video'
+  previewUrl?: string
 }
 
 type Conversation = {
@@ -17,6 +26,17 @@ type Conversation = {
   title: string
   messages: Message[]
   createdAt: Date
+}
+
+type Particle = {
+  id: number
+  x: number
+  y: number
+  size: number
+  color: string
+  speedX: number
+  speedY: number
+  alpha: number
 }
 
 const GEMINI_API_KEY = 'AIzaSyDK68voN4wRnCh95nrlu0m9vHbtJKOECqM'
@@ -43,13 +63,117 @@ const StreamingText = ({ text }: { text: string }) => {
       const timeout = setTimeout(() => {
         setDisplayedText(prev => prev + text[currentIndex])
         setCurrentIndex(prev => prev + 1)
-      }, 20) // Adjust speed here (lower = faster)
+      }, 20)
 
       return () => clearTimeout(timeout)
     }
   }, [currentIndex, text])
 
   return <>{displayedText}</>
+}
+
+// Particle effect component
+const Particles = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [particles, setParticles] = useState<Particle[]>([])
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (canvasRef.current?.parentElement) {
+        setDimensions({
+          width: canvasRef.current.parentElement.clientWidth,
+          height: canvasRef.current.parentElement.clientHeight
+        })
+      }
+    }
+
+    updateDimensions()
+    window.addEventListener('resize', updateDimensions)
+    return () => window.removeEventListener('resize', updateDimensions)
+  }, [])
+
+  useEffect(() => {
+    if (dimensions.width === 0 || dimensions.height === 0) return
+
+    // Initialize canvas
+    const canvas = canvasRef.current
+    if (!canvas) return
+    canvas.width = dimensions.width
+    canvas.height = dimensions.height
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    // Create particles
+    const colors = ['#3b82f6', '#6366f1', '#8b5cf6', '#ec4899', '#f43f5e']
+    const newParticles = Array.from({ length: 50 }, (_, i) => ({
+      id: i,
+      x: Math.random() * dimensions.width,
+      y: Math.random() * dimensions.height,
+      size: Math.random() * 3 + 1,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speedX: Math.random() * 2 - 1,
+      speedY: Math.random() * 2 - 1,
+      alpha: Math.random() * 0.5 + 0.1
+    }))
+    setParticles(newParticles)
+
+    // Animation loop
+    let animationFrameId: number
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      setParticles(prevParticles => {
+        return prevParticles.map(p => {
+          // Update position
+          let newX = p.x + p.speedX
+          let newY = p.y + p.speedY
+          let newSpeedX = p.speedX
+          let newSpeedY = p.speedY
+
+          // Bounce off edges
+          if (newX > dimensions.width || newX < 0) {
+            newSpeedX = -newSpeedX
+            newX = Math.max(0, Math.min(newX, dimensions.width))
+          }
+          if (newY > dimensions.height || newY < 0) {
+            newSpeedY = -newSpeedY
+            newY = Math.max(0, Math.min(newY, dimensions.height))
+          }
+
+          // Draw particle
+          ctx.globalAlpha = p.alpha
+          ctx.fillStyle = p.color
+          ctx.beginPath()
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+          ctx.fill()
+
+          return {
+            ...p,
+            x: newX,
+            y: newY,
+            speedX: newSpeedX,
+            speedY: newSpeedY
+          }
+        })
+      })
+
+      animationFrameId = requestAnimationFrame(animate)
+    }
+
+    animate()
+
+    return () => {
+      cancelAnimationFrame(animationFrameId)
+    }
+  }, [dimensions])
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full pointer-events-none"
+    />
+  )
 }
 
 export default function GirishAIAssistant() {
@@ -70,6 +194,8 @@ export default function GirishAIAssistant() {
   const [isLoading, setIsLoading] = useState(false)
   const [showSidebar, setShowSidebar] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+  const [attachments, setAttachments] = useState<Attachment[]>([])
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const currentConversation = conversations.find(c => c.id === currentConversationId) || conversations[0]
@@ -79,6 +205,25 @@ export default function GirishAIAssistant() {
     conv.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     conv.messages.some(msg => msg.content.toLowerCase().includes(searchQuery.toLowerCase()))
   )
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const newAttachments: Attachment[] = Array.from(e.target.files).map(file => {
+        const fileType = file.type.split('/')[0] as 'image' | 'document' | 'audio' | 'video'
+        return {
+          id: Date.now().toString() + Math.random().toString(36).substring(2, 9),
+          name: file.name,
+          type: fileType,
+          previewUrl: fileType === 'image' ? URL.createObjectURL(file) : undefined
+        }
+      })
+      setAttachments(prev => [...prev, ...newAttachments])
+    }
+  }
+
+  const removeAttachment = (id: string) => {
+    setAttachments(prev => prev.filter(attachment => attachment.id !== id))
+  }
 
   const generateContent = async (prompt: string) => {
     try {
@@ -108,12 +253,13 @@ export default function GirishAIAssistant() {
 
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault()
-    if (!input.trim() || isLoading) return
+    if (!input.trim() && attachments.length === 0) return
 
     const userMessage: Message = {
       id: Date.now().toString(),
       content: input,
-      role: 'user'
+      role: 'user',
+      attachments: attachments.length > 0 ? [...attachments] : undefined
     }
 
     // Add thinking message
@@ -128,13 +274,14 @@ export default function GirishAIAssistant() {
         return {
           ...conv,
           messages: [...conv.messages, userMessage, thinkingMessage],
-          title: conv.messages.length === 1 ? input.slice(0, 30) : conv.title
+          title: conv.messages.length === 1 ? (input.slice(0, 30) || 'File shared') : conv.title
         }
       }
       return conv
     })
     setConversations(updatedConversations)
     setInput('')
+    setAttachments([])
     setIsLoading(true)
 
     try {
@@ -218,9 +365,14 @@ export default function GirishAIAssistant() {
   }, [messages])
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 relative overflow-hidden">
+      {/* Particle background */}
+      <div className="absolute inset-0 w-full h-full">
+        <Particles />
+      </div>
+
       {/* Sidebar - History */}
-      <div className={`fixed md:relative z-20 w-64 h-full bg-white border-r transition-transform duration-300 ease-in-out ${showSidebar ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+      <div className={`fixed md:relative z-20 w-64 h-full bg-white/80 border-r backdrop-blur-sm transition-transform duration-300 ease-in-out ${showSidebar ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
         <div className="p-4">
           <Button 
             onClick={startNewChat}
@@ -254,7 +406,7 @@ export default function GirishAIAssistant() {
                 key={conversation.id}
                 onClick={() => selectConversation(conversation.id)}
                 variant="ghost"
-                className={`w-full justify-start text-left ${currentConversationId === conversation.id ? 'bg-gray-100' : 'text-gray-700 hover:bg-gray-100'}`}
+                className={`w-full justify-start text-left ${currentConversationId === conversation.id ? 'bg-gray-100/50' : 'text-gray-700 hover:bg-gray-100/50'}`}
               >
                 <Clock3 className="h-4 w-4 mr-2 text-gray-500" />
                 <span className="truncate">{conversation.title}</span>
@@ -268,9 +420,9 @@ export default function GirishAIAssistant() {
       </div>
 
       {/* Main chat area */}
-      <div className="flex-1 flex flex-col overflow-hidden relative">
+      <div className="flex-1 flex flex-col overflow-hidden relative z-10">
         {/* Header */}
-        <header className="border-b bg-white flex items-center p-2 md:p-4">
+        <header className="border-b bg-white/80 backdrop-blur-sm flex items-center p-2 md:p-4">
           <Button 
             variant="ghost" 
             size="icon"
@@ -305,6 +457,26 @@ export default function GirishAIAssistant() {
                         <p key={i} className="mb-2 last:mb-0">{paragraph}</p>
                       ))
                     )}
+                    {message.attachments && message.attachments.length > 0 && (
+                      <div className="mt-2 space-y-2">
+                        {message.attachments.map(attachment => (
+                          <div key={attachment.id} className="flex items-center p-2 bg-white/20 rounded">
+                            {attachment.type === 'image' && attachment.previewUrl ? (
+                              <img 
+                                src={attachment.previewUrl} 
+                                alt={attachment.name} 
+                                className="h-16 w-16 object-cover rounded mr-2"
+                              />
+                            ) : (
+                              <div className="h-16 w-16 bg-gray-200 rounded flex items-center justify-center mr-2">
+                                <Paperclip className="h-5 w-5 text-gray-500" />
+                              </div>
+                            )}
+                            <span className="text-sm truncate">{attachment.name}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -314,21 +486,72 @@ export default function GirishAIAssistant() {
         </main>
 
         {/* Fixed input area at bottom of chat section */}
-        <div className="absolute bottom-0 left-0 right-0 bg-white border-t">
+        <div className="absolute bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t">
+          {/* Attachment preview */}
+          {attachments.length > 0 && (
+            <div className="px-4 pt-2 pb-1 flex flex-wrap gap-2 max-w-4xl mx-auto">
+              {attachments.map(attachment => (
+                <div key={attachment.id} className="relative group">
+                  {attachment.type === 'image' && attachment.previewUrl ? (
+                    <div className="h-16 w-16 rounded overflow-hidden">
+                      <img 
+                        src={attachment.previewUrl} 
+                        alt={attachment.name} 
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="h-16 w-16 bg-gray-200 rounded flex items-center justify-center">
+                      <Paperclip className="h-5 w-5 text-gray-500" />
+                    </div>
+                  )}
+                  <button
+                    onClick={() => removeAttachment(attachment.id)}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <span className="text-xs">×</span>
+                  </button>
+                  <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs p-1 truncate">
+                    {attachment.name}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          
+          {/* Input form */}
           <div className="max-w-4xl mx-auto p-4">
             <form onSubmit={handleSubmit} className="relative">
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                multiple
+                className="hidden"
+              />
+              <div className="absolute left-2 bottom-2 flex space-x-1">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="h-7 w-7"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <Paperclip className="h-3.5 w-3.5" />
+                </Button>
+              </div>
               <Textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Type your message..."
-                className="pr-12 resize-none text-sm"
+                className="pl-10 pr-12 resize-none text-sm bg-white/90"
                 rows={1}
                 style={{ minHeight: '44px', maxHeight: '120px' }}
               />
               <Button
                 type="submit"
-                disabled={!input.trim() || isLoading}
+                disabled={(!input.trim() && attachments.length === 0) || isLoading}
                 size="icon"
                 className="absolute right-2 bottom-2 h-7 w-7"
                 variant="ghost"
