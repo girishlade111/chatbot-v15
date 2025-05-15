@@ -1,0 +1,314 @@
+import { useState, useRef, useEffect } from 'react'
+import { Send, User, Bot, Loader2, Plus, Clock3, Menu, Search } from 'lucide-react'
+import { Textarea } from "/components/ui/textarea"
+import { Button } from "/components/ui/button"
+import { Separator } from "/components/ui/separator"
+import { Input } from "/components/ui/input"
+
+type Message = {
+  id: string
+  content: string
+  role: 'user' | 'assistant'
+}
+
+type Conversation = {
+  id: string
+  title: string
+  messages: Message[]
+  createdAt: Date
+}
+
+const GEMINI_API_KEY = 'AIzaSyDK68voN4wRnCh95nrlu0m9vHbtJKOECqM'
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`
+
+export default function GeminiChatbot() {
+  const [conversations, setConversations] = useState<Conversation[]>(() => {
+    return [{
+      id: '1',
+      title: 'New conversation',
+      messages: [{
+        id: '1',
+        content: 'Hello! I\'m your AI assistant powered by Gemini. How can I help you today?',
+        role: 'assistant'
+      }],
+      createdAt: new Date()
+    }]
+  })
+  const [currentConversationId, setCurrentConversationId] = useState('1')
+  const [input, setInput] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [showSidebar, setShowSidebar] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  const currentConversation = conversations.find(c => c.id === currentConversationId) || conversations[0]
+  const messages = currentConversation.messages
+
+  const filteredConversations = conversations.filter(conv => 
+    conv.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    conv.messages.some(msg => msg.content.toLowerCase().includes(searchQuery.toLowerCase()))
+  )
+
+  const generateContent = async (prompt: string) => {
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{ text: prompt }]
+          }]
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`)
+      }
+
+      const data = await response.json()
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || "I couldn't generate a response. Please try again."
+    } catch (error) {
+      console.error('Error calling Gemini API:', error)
+      return "Sorry, I encountered an error. Please try again later."
+    }
+  }
+
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault()
+    if (!input.trim() || isLoading) return
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      content: input,
+      role: 'user'
+    }
+
+    const updatedConversations = conversations.map(conv => {
+      if (conv.id === currentConversationId) {
+        return {
+          ...conv,
+          messages: [...conv.messages, userMessage],
+          title: conv.messages.length === 1 ? input.slice(0, 30) : conv.title
+        }
+      }
+      return conv
+    })
+    setConversations(updatedConversations)
+    setInput('')
+    setIsLoading(true)
+
+    try {
+      const response = await generateContent(input)
+      const assistantMessage: Message = {
+        id: Date.now().toString(),
+        content: response,
+        role: 'assistant'
+      }
+      setConversations(prev => prev.map(conv => {
+        if (conv.id === currentConversationId) {
+          return {
+            ...conv,
+            messages: [...conv.messages, assistantMessage]
+          }
+        }
+        return conv
+      }))
+    } catch (error) {
+      console.error('Error generating response:', error)
+      const errorMessage: Message = {
+        id: Date.now().toString(),
+        content: "Sorry, I couldn't generate a response. Please try again.",
+        role: 'assistant'
+      }
+      setConversations(prev => prev.map(conv => {
+        if (conv.id === currentConversationId) {
+          return {
+            ...conv,
+            messages: [...conv.messages, errorMessage]
+          }
+        }
+        return conv
+      }))
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const startNewChat = () => {
+    const newConversation: Conversation = {
+      id: Date.now().toString(),
+      title: 'New conversation',
+      messages: [{
+        id: '1',
+        content: 'Hello! I\'m your AI assistant powered by Gemini. How can I help you today?',
+        role: 'assistant'
+      }],
+      createdAt: new Date()
+    }
+    setConversations([newConversation, ...conversations])
+    setCurrentConversationId(newConversation.id)
+    setShowSidebar(false)
+    setSearchQuery('')
+  }
+
+  const selectConversation = (id: string) => {
+    setCurrentConversationId(id)
+    setShowSidebar(false)
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleSubmit()
+    }
+  }
+
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar)
+  }
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+
+  return (
+    <div className="flex h-screen bg-gray-50">
+      {/* Sidebar - History */}
+      <div className={`fixed md:relative z-20 w-64 h-full bg-white border-r transition-transform duration-300 ease-in-out ${showSidebar ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+        <div className="p-4">
+          <Button 
+            onClick={startNewChat}
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            New chat
+          </Button>
+        </div>
+        
+        {/* Compact Search Bar */}
+        <div className="px-3 pb-2">
+          <div className="relative">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
+            <Input
+              type="text"
+              placeholder="Search..."
+              className="pl-8 pr-2 py-1 h-7 text-xs bg-white border-gray-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <Separator className="bg-gray-200" />
+        <div className="overflow-y-auto h-[calc(100%-150px)]">
+          <div className="p-2">
+            <h3 className="text-sm text-gray-500 px-2 py-2">Recent conversations</h3>
+            {filteredConversations.map(conversation => (
+              <Button
+                key={conversation.id}
+                onClick={() => selectConversation(conversation.id)}
+                variant="ghost"
+                className={`w-full justify-start text-left ${currentConversationId === conversation.id ? 'bg-gray-100' : 'text-gray-700 hover:bg-gray-100'}`}
+              >
+                <Clock3 className="h-4 w-4 mr-2 text-gray-500" />
+                <span className="truncate">{conversation.title}</span>
+              </Button>
+            ))}
+            {filteredConversations.length === 0 && (
+              <p className="text-sm text-gray-500 px-2 py-2">No conversations found</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Main chat area */}
+      <div className="flex-1 flex flex-col overflow-hidden relative">
+        {/* Header */}
+        <header className="border-b bg-white flex items-center p-2 md:p-4">
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={toggleSidebar}
+            className="md:hidden mr-2"
+          >
+            <Menu className="h-6 w-6" />
+          </Button>
+          <h1 className="text-xl font-semibold">Gemini AI Assistant</h1>
+        </header>
+
+        {/* Messages container */}
+        <main className="flex-1 overflow-y-auto p-4 max-w-4xl mx-auto w-full pb-24">
+          <div className="space-y-6">
+            {messages.map((message) => (
+              <div key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`flex max-w-3xl ${message.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center ${message.role === 'user' ? 'bg-blue-500 text-white ml-3' : 'bg-gray-200 text-gray-700 mr-3'}`}>
+                    {message.role === 'user' ? <User className="h-5 w-5" /> : <Bot className="h-5 w-5" />}
+                  </div>
+                  <div className={`px-4 py-3 rounded-lg ${message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-white border text-gray-800'}`}>
+                    {message.content.split('\n').map((paragraph, i) => (
+                      <p key={i} className="mb-2 last:mb-0">{paragraph}</p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="flex max-w-3xl">
+                  <div className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center bg-gray-200 text-gray-700 mr-3">
+                    <Bot className="h-5 w-5" />
+                  </div>
+                  <div className="px-4 py-3 rounded-lg bg-white border text-gray-800">
+                    <Loader2 className="animate-spin h-5 w-5" />
+                  </div>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+        </main>
+
+        {/* Fixed input area at bottom of chat section */}
+        <div className="absolute bottom-0 left-0 right-0 bg-white border-t">
+          <div className="max-w-4xl mx-auto p-4">
+            <form onSubmit={handleSubmit} className="relative">
+              <Textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Type your message..."
+                className="pr-12 resize-none text-sm"
+                rows={1}
+                style={{ minHeight: '44px', maxHeight: '120px' }}
+              />
+              <Button
+                type="submit"
+                disabled={!input.trim() || isLoading}
+                size="icon"
+                className="absolute right-2 bottom-2 h-7 w-7"
+                variant="ghost"
+              >
+                {isLoading ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Send className="h-3.5 w-3.5" />
+                )}
+              </Button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile overlay */}
+      {showSidebar && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-10 md:hidden"
+          onClick={() => setShowSidebar(false)}
+        />
+      )}
+    </div>
+  )
+}
