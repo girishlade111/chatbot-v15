@@ -1,0 +1,633 @@
+import { useState, useRef, useEffect, ChangeEvent } from 'react';
+import { Send, Loader2, Sun, Moon, LogIn, LogOut, Settings, Paperclip, X, Trash2, Plus } from 'lucide-react';
+import { Button } from "/components/ui/button";
+import { Input } from "/components/ui/input";
+import { Label } from "/components/ui/label";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "/components/ui/avatar";
+import { motion } from "framer-motion";
+
+type Message = {
+  id: string;
+  text: string;
+  sender: 'user' | 'bot';
+  timestamp: Date;
+  file?: {
+    name: string;
+    type: string;
+    content: string;
+  };
+};
+
+type ChatSession = {
+  id: string;
+  title: string;
+  messages: Message[];
+  createdAt: Date;
+};
+
+const GEMINI_API_KEY = 'AIzaSyDK68voN4wRnCh95nrlu0m9vHbtJKOECqM';
+const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+export default function Chatbot() {
+  // Theme state
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  
+  // Authentication state
+  const [showProfile, setShowProfile] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLoginForm, setShowLoginForm] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [authError, setAuthError] = useState('');
+  const [authLoading, setAuthLoading] = useState(false);
+  const [userProfile, setUserProfile] = useState({
+    name: 'Guest',
+    email: '',
+    avatar: ''
+  });
+
+  // Chat state
+  const [chatSessions, setChatSessions] = useState<ChatSession[]>(() => {
+    const initialSession: ChatSession = {
+      id: '1',
+      title: 'New Chat',
+      messages: [{
+        id: '1',
+        text: 'Hello! I am your AI assistant powered by Gemini. You can upload files for me to analyze.',
+        sender: 'bot',
+        timestamp: new Date()
+      }],
+      createdAt: new Date()
+    };
+    return [initialSession];
+  });
+  const [currentSessionId, setCurrentSessionId] = useState('1');
+  const [inputValue, setInputValue] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<{
+    name: string;
+    type: string;
+    content: string;
+  } | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Get current session
+  const currentSession = chatSessions.find(session => session.id === currentSessionId) || chatSessions[0];
+
+  // Apply theme
+  useEffect(() => {
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(theme);
+  }, [theme]);
+
+  // Auto-scroll to newest message
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [currentSession.messages]);
+
+  // Show toast message
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => {
+        setToastMessage(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
+
+  // Login with your credentials
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    setAuthError('');
+
+    setTimeout(() => {
+      if (email === 'Admin@girish.com' && password === '@Girish111') {
+        setIsLoggedIn(true);
+        setUserProfile({
+          name: 'Girish',
+          email: 'Admin@girish.com',
+          avatar: 'https://github.com/shadcn.png'
+        });
+        setShowLoginForm(false);
+      } else {
+        setAuthError('Invalid credentials');
+      }
+      setAuthLoading(false);
+    }, 1000);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUserProfile({
+      name: 'Guest',
+      email: '',
+      avatar: ''
+    });
+    setShowProfile(false);
+  };
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      setToastMessage('File size exceeds 10MB limit');
+      return;
+    }
+
+    // Check file type
+    const allowedTypes = [
+      'application/pdf',
+      'text/plain',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/msword',
+      'text/csv',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      setToastMessage('Unsupported file type');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target?.result as string;
+      setSelectedFile({
+        name: file.name,
+        type: file.type,
+        content: content.split(',')[1] // Remove data URL prefix
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removeFile = () => {
+    setSelectedFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const generateContentWithGemini = async (prompt: string, fileContent?: string, fileType?: string) => {
+    try {
+      const requestBody: any = {
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }]
+      };
+
+      if (fileContent && fileType) {
+        requestBody.contents[0].parts.push({
+          inlineData: {
+            mimeType: fileType,
+            data: fileContent
+          }
+        });
+      }
+
+      const response = await fetch(GEMINI_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('API Error:', errorData);
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || "I couldn't generate a response. Please try again.";
+    } catch (error) {
+      console.error('Error calling Gemini API:', error);
+      return "Sorry, I encountered an error. Please try again later.";
+    }
+  };
+
+  const handleSendMessage = async () => {
+    if (!inputValue.trim() && !selectedFile) return;
+
+    // Add user message
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      text: inputValue,
+      sender: 'user',
+      timestamp: new Date(),
+      ...(selectedFile && { file: selectedFile })
+    };
+
+    // Update current session with new message
+    const updatedSessions = chatSessions.map(session => {
+      if (session.id === currentSessionId) {
+        return {
+          ...session,
+          messages: [...session.messages, userMessage],
+          title: session.messages.length === 1 ? inputValue.slice(0, 30) || 'New Chat' : session.title
+        };
+      }
+      return session;
+    });
+    setChatSessions(updatedSessions);
+    setInputValue('');
+    setIsTyping(true);
+
+    try {
+      // Get response from Gemini API
+      const botResponse = await generateContentWithGemini(
+        inputValue || "Analyze this file",
+        selectedFile?.content,
+        selectedFile?.type
+      );
+      
+      const botMessage: Message = {
+        id: Date.now().toString(),
+        text: botResponse,
+        sender: 'bot',
+        timestamp: new Date()
+      };
+
+      // Update session with bot response
+      setChatSessions(prevSessions => 
+        prevSessions.map(session => {
+          if (session.id === currentSessionId) {
+            return {
+              ...session,
+              messages: [...session.messages, botMessage]
+            };
+          }
+          return session;
+        })
+      );
+    } catch (error) {
+      const errorMessage: Message = {
+        id: Date.now().toString(),
+        text: "Sorry, I couldn't process your request. Please try again.",
+        sender: 'bot',
+        timestamp: new Date()
+      };
+      setChatSessions(prevSessions => 
+        prevSessions.map(session => {
+          if (session.id === currentSessionId) {
+            return {
+              ...session,
+              messages: [...session.messages, errorMessage]
+            };
+          }
+          return session;
+        })
+      );
+    } finally {
+      setIsTyping(false);
+      setSelectedFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
+  const createNewChat = () => {
+    const newSession: ChatSession = {
+      id: Date.now().toString(),
+      title: 'New Chat',
+      messages: [{
+        id: '1',
+        text: 'Hello! I am your AI assistant powered by Gemini. How can I help you today?',
+        sender: 'bot',
+        timestamp: new Date()
+      }],
+      createdAt: new Date()
+    };
+    setChatSessions(prev => [newSession, ...prev]);
+    setCurrentSessionId(newSession.id);
+  };
+
+  const deleteChatSession = (id: string) => {
+    if (chatSessions.length <= 1) {
+      setToastMessage("You must keep at least one chat session");
+      return;
+    }
+
+    setChatSessions(prev => prev.filter(session => session.id !== id));
+    if (currentSessionId === id) {
+      setCurrentSessionId(chatSessions[0].id);
+    }
+  };
+
+  const clearChatHistory = () => {
+    setChatSessions(prev => {
+      const newSession: ChatSession = {
+        id: Date.now().toString(),
+        title: 'New Chat',
+        messages: [{
+          id: '1',
+          text: 'Hello! I am your AI assistant powered by Gemini. How can I help you today?',
+          sender: 'bot',
+          timestamp: new Date()
+        }],
+        createdAt: new Date()
+      };
+      return [newSession];
+    });
+    setCurrentSessionId(chatSessions[0].id);
+  };
+
+  return (
+    <div className={`flex h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>
+      {/* Hidden file input */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        className="hidden"
+        accept=".pdf,.txt,.doc,.docx,.csv,.xls,.xlsx"
+      />
+
+      {/* Toast notification */}
+      {toastMessage && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          className="fixed bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg"
+        >
+          {toastMessage}
+        </motion.div>
+      )}
+
+      {/* Sidebar */}
+      <div className={`w-64 border-r p-4 hidden md:flex flex-col ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+        <div className="flex items-center justify-between mb-4">
+          <Button onClick={createNewChat} className="w-full">
+            <Plus className="mr-2 h-4 w-4" />
+            New Chat
+          </Button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto">
+          <h2 className="text-lg font-semibold mb-2">Chat History</h2>
+          <div className="space-y-1">
+            {chatSessions.map((session) => (
+              <div 
+                key={session.id} 
+                className={`flex items-center justify-between p-2 rounded-lg cursor-pointer ${currentSessionId === session.id ? (theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200') : ''}`}
+                onClick={() => setCurrentSessionId(session.id)}
+              >
+                <div className="truncate flex-1">
+                  {session.title}
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteChatSession(session.id);
+                  }}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-2">
+          <Button 
+            variant="outline" 
+            className="w-full" 
+            onClick={clearChatHistory}
+          >
+            Clear All History
+          </Button>
+        </div>
+
+        {/* Profile Section */}
+        <div className={`mt-auto pt-4 border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start"
+            onClick={() => setShowProfile(!showProfile)}
+          >
+            <div className="flex items-center space-x-3">
+              <Avatar>
+                <AvatarImage src={userProfile.avatar} />
+                <AvatarFallback>
+                  {userProfile.name.charAt(0)}
+                </AvatarFallback>
+              </Avatar>
+              <div className="text-left">
+                <div className="font-medium">{userProfile.name}</div>
+                <div className="text-xs text-gray-500">{userProfile.email || 'Guest'}</div>
+              </div>
+            </div>
+          </Button>
+
+          {showProfile && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              className={`mt-2 rounded-lg overflow-hidden ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'}`}
+            >
+              <div className="p-3 space-y-2">
+                {!isLoggedIn ? (
+                  showLoginForm ? (
+                    <form onSubmit={handleLogin} className="space-y-3">
+                      <div>
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="your@email.com"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="password">Password</Label>
+                        <Input
+                          id="password"
+                          type="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          placeholder="••••••••"
+                        />
+                      </div>
+                      {authError && (
+                        <div className="text-sm text-red-500">{authError}</div>
+                      )}
+                      <div className="flex space-x-2">
+                        <Button type="submit" className="flex-1" disabled={authLoading}>
+                          {authLoading ? <Loader2 className="animate-spin" /> : 'Login'}
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          onClick={() => setShowLoginForm(false)}
+                          disabled={authLoading}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </form>
+                  ) : (
+                    <Button 
+                      variant="ghost" 
+                      className="w-full justify-start"
+                      onClick={() => setShowLoginForm(true)}
+                    >
+                      <LogIn className="mr-2 h-4 w-4" />
+                      Login
+                    </Button>
+                  )
+                ) : (
+                  <>
+                    <Button variant="ghost" className="w-full justify-start">
+                      <Settings className="mr-2 h-4 w-4" />
+                      Settings
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      className="w-full justify-start"
+                      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+                    >
+                      {theme === 'light' ? (
+                        <Moon className="mr-2 h-4 w-4" />
+                      ) : (
+                        <Sun className="mr-2 h-4 w-4" />
+                      )}
+                      {theme === 'light' ? 'Dark' : 'Light'} Mode
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      className="w-full justify-start text-red-500"
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Logout
+                    </Button>
+                  </>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </div>
+      </div>
+
+      {/* Main Chat Area */}
+      <div className="flex-1 flex flex-col">
+        <Card className="flex-1 mx-2 my-2 md:mx-4 md:my-4 flex flex-col">
+          <CardHeader>
+            <CardTitle>{currentSession.title}</CardTitle>
+          </CardHeader>
+          <CardContent className="flex-1 overflow-y-auto p-4 space-y-4">
+            {currentSession.messages.map((message) => (
+              <div key={message.id} className="space-y-2">
+                <div
+                  className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div
+                    className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                      message.sender === 'user'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-secondary text-secondary-foreground'
+                    }`}
+                  >
+                    {message.text}
+                  </div>
+                </div>
+                {message.file && (
+                  <div className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                      message.sender === 'user'
+                        ? 'bg-primary/20 text-primary-foreground'
+                        : 'bg-secondary/20 text-secondary-foreground'
+                    }`}>
+                      <div className="flex items-center gap-2">
+                        <Paperclip className="h-4 w-4" />
+                        <span className="truncate">{message.file.name}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+            {isTyping && (
+              <div className="flex justify-start">
+                <div className="bg-secondary text-secondary-foreground px-4 py-2 rounded-lg">
+                  <Loader2 className="animate-spin h-5 w-5" />
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </CardContent>
+          <CardFooter className="border-t p-4">
+            <div className="flex flex-col w-full gap-2">
+              {selectedFile && (
+                <div className="flex items-center justify-between bg-secondary/20 text-secondary-foreground px-4 py-2 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <Paperclip className="h-4 w-4" />
+                    <span className="truncate max-w-xs">{selectedFile.name}</span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    onClick={removeFile}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+              <div className="flex w-full items-center space-x-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={triggerFileInput}
+                  disabled={isTyping}
+                >
+                  <Paperclip className="h-4 w-4" />
+                </Button>
+                <Input
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Type a message or upload a file..."
+                  disabled={isTyping}
+                />
+                <Button
+                  onClick={handleSendMessage}
+                  disabled={(!inputValue.trim() && !selectedFile) || isTyping}
+                  size="icon"
+                >
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </CardFooter>
+        </Card>
+      </div>
+    </div>
+  );
+}
