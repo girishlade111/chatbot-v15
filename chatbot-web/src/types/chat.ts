@@ -12,6 +12,8 @@ export interface Message {
   latencyMs?: number;
   edited?: boolean;
   editedAt?: number;
+  parentId?: string;
+  branchPoint?: boolean;
   createdAt: number;
 }
 
