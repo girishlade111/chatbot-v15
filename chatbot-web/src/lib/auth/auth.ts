@@ -1,11 +1,12 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import Google from 'next-auth/providers/google';
-import { prisma } from '@/lib/db/prisma';
-import { createHash } from 'crypto';
 
-function hashPassword(password: string): string {
-  return createHash('sha256').update(password).digest('hex');
+async function hashPassword(password: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -19,10 +20,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
+        const { prisma } = await import('@/lib/db/prisma');
         const user = await prisma.user.findUnique({ where: { email: credentials.email as string } });
         if (!user || user.banned) return null;
 
-        const passwordHash = hashPassword(credentials.password as string);
+        const passwordHash = await hashPassword(credentials.password as string);
         if (user.passwordHash !== passwordHash) return null;
 
         return { id: user.id, email: user.email, name: user.name, image: user.image, role: user.role };
@@ -51,5 +53,3 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   pages: { signIn: '/login' },
 });
-
-export const authOptions = { providers: [], session: { strategy: 'jwt' as const } };
