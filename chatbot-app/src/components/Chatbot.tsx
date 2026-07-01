@@ -1,5 +1,6 @@
 import {
-  useState, useRef, useEffect, useCallback, ChangeEvent, KeyboardEvent
+  useState, useRef, useEffect, useCallback, type ChangeEvent, type KeyboardEvent,
+  type JSX,
 } from 'react';
 import {
   Send, Loader2, Sun, Moon, LogIn, LogOut, Settings, Paperclip,
