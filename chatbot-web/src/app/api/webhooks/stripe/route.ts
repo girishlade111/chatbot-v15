@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { stripe, PLANS, getPlanByPriceId } from '@/lib/billing/stripe';
+import Stripe from 'stripe';
+import { stripe as stripeClient, PLANS, getPlanByPriceId } from '@/lib/billing/stripe';
 import { prisma } from '@/lib/db/prisma';
 
 export async function POST(req: NextRequest) {
@@ -13,7 +14,7 @@ export async function POST(req: NextRequest) {
 
     let event: Stripe.Event;
     try {
-      event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET);
+      event = stripeClient.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET);
     } catch {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
     }
