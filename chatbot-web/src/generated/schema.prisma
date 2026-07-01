@@ -4,11 +4,11 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
 }
 
 model User {
-  id            String    @id @default(uuid()) @db.Uuid
+  id            String    @id @default(uuid())
   email         String    @unique
   name          String?
   image         String?
@@ -37,8 +37,8 @@ model User {
 }
 
 model Account {
-  id                String  @id @default(uuid()) @db.Uuid
-  userId            String  @db.Uuid
+  id                String  @id @default(uuid())
+  userId            String
   type              String
   provider          String
   providerAccountId String
@@ -57,9 +57,9 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(uuid()) @db.Uuid
+  id           String   @id @default(uuid())
   sessionToken String   @unique
-  userId       String   @db.Uuid
+  userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -67,8 +67,8 @@ model Session {
 }
 
 model ApiKey {
-  id        String    @id @default(uuid()) @db.Uuid
-  userId    String    @db.Uuid
+  id        String    @id @default(uuid())
+  userId    String
   provider  String
   keyPrefix String
   keyHash   String
@@ -83,8 +83,8 @@ model ApiKey {
 }
 
 model Subscription {
-  id                 String    @id @default(uuid()) @db.Uuid
-  userId             String    @unique @db.Uuid
+  id                 String    @id @default(uuid())
+  userId             String    @unique
   stripeId           String?   @unique
   plan               String    @default("FREE")
   status             String    @default("ACTIVE")
@@ -100,18 +100,18 @@ model Subscription {
 }
 
 model Conversation {
-  id           String   @id @default(uuid()) @db.Uuid
-  userId       String   @db.Uuid
+  id           String   @id @default(uuid())
+  userId       String
   title        String   @default("New Chat")
   model        String   @default("gpt-4o")
-  systemPrompt String?  @db.Text
+  systemPrompt String?
   temperature  Float    @default(0.7)
   topP         Float    @default(1.0)
   maxTokens    Int      @default(4096)
   pinned       Boolean  @default(false)
   archived     Boolean  @default(false)
-  folderId     String?  @db.Uuid
-  parentId     String?  @db.Uuid
+  folderId     String?
+  parentId     String?
   tokenCount   Int      @default(0)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -129,8 +129,8 @@ model Conversation {
 }
 
 model Folder {
-  id        String   @id @default(uuid()) @db.Uuid
-  userId    String   @db.Uuid
+  id        String   @id @default(uuid())
+  userId    String
   name      String
   color     String   @default("#6366f1")
   createdAt DateTime @default(now())
@@ -143,12 +143,12 @@ model Folder {
 }
 
 model Message {
-  id             String    @id @default(uuid()) @db.Uuid
-  conversationId String    @db.Uuid
+  id             String    @id @default(uuid())
+  conversationId String
   role           String
-  content        String    @db.Text
-  toolCalls      Json?
-  toolResults    Json?
+  content        String
+  toolCalls      String?
+  toolResults    String?
   tokensIn       Int       @default(0)
   tokensOut      Int       @default(0)
   latencyMs      Int?
@@ -163,8 +163,8 @@ model Message {
 }
 
 model KnowledgeBase {
-  id             String   @id @default(uuid()) @db.Uuid
-  userId         String   @db.Uuid
+  id             String   @id @default(uuid())
+  userId         String
   name           String
   description    String?
   chunkSize      Int      @default(1000)
@@ -181,8 +181,8 @@ model KnowledgeBase {
 }
 
 model Document {
-  id              String   @id @default(uuid()) @db.Uuid
-  knowledgeBaseId String   @db.Uuid
+  id              String   @id @default(uuid())
+  knowledgeBaseId String
   filename        String
   originalName    String
   mimeType        String
@@ -201,10 +201,10 @@ model Document {
 }
 
 model Chunk {
-  id         String  @id @default(uuid()) @db.Uuid
-  documentId String  @db.Uuid
+  id         String  @id @default(uuid())
+  documentId String
   index      Int
-  content    String  @db.Text
+  content    String
   embedding  String?
 
   document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
@@ -214,13 +214,13 @@ model Chunk {
 }
 
 model PromptTemplate {
-  id         String   @id @default(uuid()) @db.Uuid
-  userId     String   @db.Uuid
+  id         String   @id @default(uuid())
+  userId     String
   name       String
-  content    String   @db.Text
+  content    String
   model      String?
   isPublic   Boolean  @default(false)
-  tags       String[]
+  tags       String
   usageCount Int      @default(0)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -233,9 +233,9 @@ model PromptTemplate {
 }
 
 model UsageLog {
-  id             String   @id @default(uuid()) @db.Uuid
-  userId         String   @db.Uuid
-  conversationId String?  @db.Uuid
+  id             String   @id @default(uuid())
+  userId         String
+  conversationId String?
   model          String
   provider       String
   tokensIn       Int      @default(0)
@@ -258,7 +258,7 @@ model UsageLog {
 
 model SystemConfig {
   id                 String   @id @default("global")
-  globalSystemPrompt String?  @db.Text
+  globalSystemPrompt String?
   rateLimitPerMin    Int      @default(60)
   rateLimitPerDay    Int      @default(1000)
   moderationEnabled  Boolean  @default(true)

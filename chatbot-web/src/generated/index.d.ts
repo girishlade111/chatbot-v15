@@ -3345,7 +3345,6 @@ export namespace Prisma {
      * The data used to create many Users.
      */
     data: UserCreateManyInput | UserCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -3364,7 +3363,6 @@ export namespace Prisma {
      * The data used to create many Users.
      */
     data: UserCreateManyInput | UserCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -4736,7 +4734,6 @@ export namespace Prisma {
      * The data used to create many Accounts.
      */
     data: AccountCreateManyInput | AccountCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -4755,7 +4752,6 @@ export namespace Prisma {
      * The data used to create many Accounts.
      */
     data: AccountCreateManyInput | AccountCreateManyInput[]
-    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -5786,7 +5782,6 @@ export namespace Prisma {
      * The data used to create many Sessions.
      */
     data: SessionCreateManyInput | SessionCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -5805,7 +5800,6 @@ export namespace Prisma {
      * The data used to create many Sessions.
      */
     data: SessionCreateManyInput | SessionCreateManyInput[]
-    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -6888,7 +6882,6 @@ export namespace Prisma {
      * The data used to create many ApiKeys.
      */
     data: ApiKeyCreateManyInput | ApiKeyCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -6907,7 +6900,6 @@ export namespace Prisma {
      * The data used to create many ApiKeys.
      */
     data: ApiKeyCreateManyInput | ApiKeyCreateManyInput[]
-    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -8016,7 +8008,6 @@ export namespace Prisma {
      * The data used to create many Subscriptions.
      */
     data: SubscriptionCreateManyInput | SubscriptionCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -8035,7 +8026,6 @@ export namespace Prisma {
      * The data used to create many Subscriptions.
      */
     data: SubscriptionCreateManyInput | SubscriptionCreateManyInput[]
-    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -9285,7 +9275,6 @@ export namespace Prisma {
      * The data used to create many Conversations.
      */
     data: ConversationCreateManyInput | ConversationCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -9304,7 +9293,6 @@ export namespace Prisma {
      * The data used to create many Conversations.
      */
     data: ConversationCreateManyInput | ConversationCreateManyInput[]
-    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -10464,7 +10452,6 @@ export namespace Prisma {
      * The data used to create many Folders.
      */
     data: FolderCreateManyInput | FolderCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -10483,7 +10470,6 @@ export namespace Prisma {
      * The data used to create many Folders.
      */
     data: FolderCreateManyInput | FolderCreateManyInput[]
-    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -10702,6 +10688,8 @@ export namespace Prisma {
     conversationId: string | null
     role: string | null
     content: string | null
+    toolCalls: string | null
+    toolResults: string | null
     tokensIn: number | null
     tokensOut: number | null
     latencyMs: number | null
@@ -10715,6 +10703,8 @@ export namespace Prisma {
     conversationId: string | null
     role: string | null
     content: string | null
+    toolCalls: string | null
+    toolResults: string | null
     tokensIn: number | null
     tokensOut: number | null
     latencyMs: number | null
@@ -10757,6 +10747,8 @@ export namespace Prisma {
     conversationId?: true
     role?: true
     content?: true
+    toolCalls?: true
+    toolResults?: true
     tokensIn?: true
     tokensOut?: true
     latencyMs?: true
@@ -10770,6 +10762,8 @@ export namespace Prisma {
     conversationId?: true
     role?: true
     content?: true
+    toolCalls?: true
+    toolResults?: true
     tokensIn?: true
     tokensOut?: true
     latencyMs?: true
@@ -10885,8 +10879,8 @@ export namespace Prisma {
     conversationId: string
     role: string
     content: string
-    toolCalls: JsonValue | null
-    toolResults: JsonValue | null
+    toolCalls: string | null
+    toolResults: string | null
     tokensIn: number
     tokensOut: number
     latencyMs: number | null
@@ -10998,8 +10992,8 @@ export namespace Prisma {
       conversationId: string
       role: string
       content: string
-      toolCalls: Prisma.JsonValue | null
-      toolResults: Prisma.JsonValue | null
+      toolCalls: string | null
+      toolResults: string | null
       tokensIn: number
       tokensOut: number
       latencyMs: number | null
@@ -11434,8 +11428,8 @@ export namespace Prisma {
     readonly conversationId: FieldRef<"Message", 'String'>
     readonly role: FieldRef<"Message", 'String'>
     readonly content: FieldRef<"Message", 'String'>
-    readonly toolCalls: FieldRef<"Message", 'Json'>
-    readonly toolResults: FieldRef<"Message", 'Json'>
+    readonly toolCalls: FieldRef<"Message", 'String'>
+    readonly toolResults: FieldRef<"Message", 'String'>
     readonly tokensIn: FieldRef<"Message", 'Int'>
     readonly tokensOut: FieldRef<"Message", 'Int'>
     readonly latencyMs: FieldRef<"Message", 'Int'>
@@ -11676,7 +11670,6 @@ export namespace Prisma {
      * The data used to create many Messages.
      */
     data: MessageCreateManyInput | MessageCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -11695,7 +11688,6 @@ export namespace Prisma {
      * The data used to create many Messages.
      */
     data: MessageCreateManyInput | MessageCreateManyInput[]
-    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -12835,7 +12827,6 @@ export namespace Prisma {
      * The data used to create many KnowledgeBases.
      */
     data: KnowledgeBaseCreateManyInput | KnowledgeBaseCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -12854,7 +12845,6 @@ export namespace Prisma {
      * The data used to create many KnowledgeBases.
      */
     data: KnowledgeBaseCreateManyInput | KnowledgeBaseCreateManyInput[]
-    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -14044,7 +14034,6 @@ export namespace Prisma {
      * The data used to create many Documents.
      */
     data: DocumentCreateManyInput | DocumentCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -14063,7 +14052,6 @@ export namespace Prisma {
      * The data used to create many Documents.
      */
     data: DocumentCreateManyInput | DocumentCreateManyInput[]
-    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -15165,7 +15153,6 @@ export namespace Prisma {
      * The data used to create many Chunks.
      */
     data: ChunkCreateManyInput | ChunkCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -15184,7 +15171,6 @@ export namespace Prisma {
      * The data used to create many Chunks.
      */
     data: ChunkCreateManyInput | ChunkCreateManyInput[]
-    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -15377,6 +15363,7 @@ export namespace Prisma {
     content: string | null
     model: string | null
     isPublic: boolean | null
+    tags: string | null
     usageCount: number | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -15389,6 +15376,7 @@ export namespace Prisma {
     content: string | null
     model: string | null
     isPublic: boolean | null
+    tags: string | null
     usageCount: number | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -15424,6 +15412,7 @@ export namespace Prisma {
     content?: true
     model?: true
     isPublic?: true
+    tags?: true
     usageCount?: true
     createdAt?: true
     updatedAt?: true
@@ -15436,6 +15425,7 @@ export namespace Prisma {
     content?: true
     model?: true
     isPublic?: true
+    tags?: true
     usageCount?: true
     createdAt?: true
     updatedAt?: true
@@ -15548,7 +15538,7 @@ export namespace Prisma {
     content: string
     model: string | null
     isPublic: boolean
-    tags: string[]
+    tags: string
     usageCount: number
     createdAt: Date
     updatedAt: Date
@@ -15651,7 +15641,7 @@ export namespace Prisma {
       content: string
       model: string | null
       isPublic: boolean
-      tags: string[]
+      tags: string
       usageCount: number
       createdAt: Date
       updatedAt: Date
@@ -16085,7 +16075,7 @@ export namespace Prisma {
     readonly content: FieldRef<"PromptTemplate", 'String'>
     readonly model: FieldRef<"PromptTemplate", 'String'>
     readonly isPublic: FieldRef<"PromptTemplate", 'Boolean'>
-    readonly tags: FieldRef<"PromptTemplate", 'String[]'>
+    readonly tags: FieldRef<"PromptTemplate", 'String'>
     readonly usageCount: FieldRef<"PromptTemplate", 'Int'>
     readonly createdAt: FieldRef<"PromptTemplate", 'DateTime'>
     readonly updatedAt: FieldRef<"PromptTemplate", 'DateTime'>
@@ -16323,7 +16313,6 @@ export namespace Prisma {
      * The data used to create many PromptTemplates.
      */
     data: PromptTemplateCreateManyInput | PromptTemplateCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -16342,7 +16331,6 @@ export namespace Prisma {
      * The data used to create many PromptTemplates.
      */
     data: PromptTemplateCreateManyInput | PromptTemplateCreateManyInput[]
-    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -17544,7 +17532,6 @@ export namespace Prisma {
      * The data used to create many UsageLogs.
      */
     data: UsageLogCreateManyInput | UsageLogCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -17563,7 +17550,6 @@ export namespace Prisma {
      * The data used to create many UsageLogs.
      */
     data: UsageLogCreateManyInput | UsageLogCreateManyInput[]
-    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -18664,7 +18650,6 @@ export namespace Prisma {
      * The data used to create many SystemConfigs.
      */
     data: SystemConfigCreateManyInput | SystemConfigCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -18683,7 +18668,6 @@ export namespace Prisma {
      * The data used to create many SystemConfigs.
      */
     data: SystemConfigCreateManyInput | SystemConfigCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -18830,9 +18814,6 @@ export namespace Prisma {
    */
 
   export const TransactionIsolationLevel: {
-    ReadUncommitted: 'ReadUncommitted',
-    ReadCommitted: 'ReadCommitted',
-    RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
   };
 
@@ -19067,37 +19048,12 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-  export const NullableJsonNullValueInput: {
-    DbNull: typeof DbNull,
-    JsonNull: typeof JsonNull
-  };
-
-  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
-
-
-  export const QueryMode: {
-    default: 'default',
-    insensitive: 'insensitive'
-  };
-
-  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
   export const NullsOrder: {
     first: 'first',
     last: 'last'
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
-
-
-  export const JsonNullValueFilter: {
-    DbNull: typeof DbNull,
-    JsonNull: typeof JsonNull,
-    AnyNull: typeof AnyNull
-  };
-
-  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -19113,13 +19069,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'String[]'
-   */
-  export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -19127,23 +19076,9 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-  /**
    * Reference to a field of type 'BigInt'
    */
   export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
-    
-
-
-  /**
-   * Reference to a field of type 'BigInt[]'
-   */
-  export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
     
 
 
@@ -19162,37 +19097,9 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'DateTime[]'
-   */
-  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float[]'
-   */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Json'
-   */
-  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-  /**
-   * Reference to a field of type 'QueryMode'
-   */
-  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
   /**
    * Deep Input Types
@@ -19203,7 +19110,7 @@ export namespace Prisma {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    id?: UuidFilter<"User"> | string
+    id?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
     name?: StringNullableFilter<"User"> | string | null
     image?: StringNullableFilter<"User"> | string | null
@@ -19309,7 +19216,7 @@ export namespace Prisma {
     AND?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     OR?: UserScalarWhereWithAggregatesInput[]
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"User"> | string
+    id?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
     name?: StringNullableWithAggregatesFilter<"User"> | string | null
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
@@ -19329,8 +19236,8 @@ export namespace Prisma {
     AND?: AccountWhereInput | AccountWhereInput[]
     OR?: AccountWhereInput[]
     NOT?: AccountWhereInput | AccountWhereInput[]
-    id?: UuidFilter<"Account"> | string
-    userId?: UuidFilter<"Account"> | string
+    id?: StringFilter<"Account"> | string
+    userId?: StringFilter<"Account"> | string
     type?: StringFilter<"Account"> | string
     provider?: StringFilter<"Account"> | string
     providerAccountId?: StringFilter<"Account"> | string
@@ -19366,7 +19273,7 @@ export namespace Prisma {
     AND?: AccountWhereInput | AccountWhereInput[]
     OR?: AccountWhereInput[]
     NOT?: AccountWhereInput | AccountWhereInput[]
-    userId?: UuidFilter<"Account"> | string
+    userId?: StringFilter<"Account"> | string
     type?: StringFilter<"Account"> | string
     provider?: StringFilter<"Account"> | string
     providerAccountId?: StringFilter<"Account"> | string
@@ -19404,8 +19311,8 @@ export namespace Prisma {
     AND?: AccountScalarWhereWithAggregatesInput | AccountScalarWhereWithAggregatesInput[]
     OR?: AccountScalarWhereWithAggregatesInput[]
     NOT?: AccountScalarWhereWithAggregatesInput | AccountScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"Account"> | string
-    userId?: UuidWithAggregatesFilter<"Account"> | string
+    id?: StringWithAggregatesFilter<"Account"> | string
+    userId?: StringWithAggregatesFilter<"Account"> | string
     type?: StringWithAggregatesFilter<"Account"> | string
     provider?: StringWithAggregatesFilter<"Account"> | string
     providerAccountId?: StringWithAggregatesFilter<"Account"> | string
@@ -19422,9 +19329,9 @@ export namespace Prisma {
     AND?: SessionWhereInput | SessionWhereInput[]
     OR?: SessionWhereInput[]
     NOT?: SessionWhereInput | SessionWhereInput[]
-    id?: UuidFilter<"Session"> | string
+    id?: StringFilter<"Session"> | string
     sessionToken?: StringFilter<"Session"> | string
-    userId?: UuidFilter<"Session"> | string
+    userId?: StringFilter<"Session"> | string
     expires?: DateTimeFilter<"Session"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -19443,7 +19350,7 @@ export namespace Prisma {
     AND?: SessionWhereInput | SessionWhereInput[]
     OR?: SessionWhereInput[]
     NOT?: SessionWhereInput | SessionWhereInput[]
-    userId?: UuidFilter<"Session"> | string
+    userId?: StringFilter<"Session"> | string
     expires?: DateTimeFilter<"Session"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "sessionToken">
@@ -19462,9 +19369,9 @@ export namespace Prisma {
     AND?: SessionScalarWhereWithAggregatesInput | SessionScalarWhereWithAggregatesInput[]
     OR?: SessionScalarWhereWithAggregatesInput[]
     NOT?: SessionScalarWhereWithAggregatesInput | SessionScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"Session"> | string
+    id?: StringWithAggregatesFilter<"Session"> | string
     sessionToken?: StringWithAggregatesFilter<"Session"> | string
-    userId?: UuidWithAggregatesFilter<"Session"> | string
+    userId?: StringWithAggregatesFilter<"Session"> | string
     expires?: DateTimeWithAggregatesFilter<"Session"> | Date | string
   }
 
@@ -19472,8 +19379,8 @@ export namespace Prisma {
     AND?: ApiKeyWhereInput | ApiKeyWhereInput[]
     OR?: ApiKeyWhereInput[]
     NOT?: ApiKeyWhereInput | ApiKeyWhereInput[]
-    id?: UuidFilter<"ApiKey"> | string
-    userId?: UuidFilter<"ApiKey"> | string
+    id?: StringFilter<"ApiKey"> | string
+    userId?: StringFilter<"ApiKey"> | string
     provider?: StringFilter<"ApiKey"> | string
     keyPrefix?: StringFilter<"ApiKey"> | string
     keyHash?: StringFilter<"ApiKey"> | string
@@ -19501,7 +19408,7 @@ export namespace Prisma {
     AND?: ApiKeyWhereInput | ApiKeyWhereInput[]
     OR?: ApiKeyWhereInput[]
     NOT?: ApiKeyWhereInput | ApiKeyWhereInput[]
-    userId?: UuidFilter<"ApiKey"> | string
+    userId?: StringFilter<"ApiKey"> | string
     provider?: StringFilter<"ApiKey"> | string
     keyPrefix?: StringFilter<"ApiKey"> | string
     keyHash?: StringFilter<"ApiKey"> | string
@@ -19529,8 +19436,8 @@ export namespace Prisma {
     AND?: ApiKeyScalarWhereWithAggregatesInput | ApiKeyScalarWhereWithAggregatesInput[]
     OR?: ApiKeyScalarWhereWithAggregatesInput[]
     NOT?: ApiKeyScalarWhereWithAggregatesInput | ApiKeyScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"ApiKey"> | string
-    userId?: UuidWithAggregatesFilter<"ApiKey"> | string
+    id?: StringWithAggregatesFilter<"ApiKey"> | string
+    userId?: StringWithAggregatesFilter<"ApiKey"> | string
     provider?: StringWithAggregatesFilter<"ApiKey"> | string
     keyPrefix?: StringWithAggregatesFilter<"ApiKey"> | string
     keyHash?: StringWithAggregatesFilter<"ApiKey"> | string
@@ -19543,8 +19450,8 @@ export namespace Prisma {
     AND?: SubscriptionWhereInput | SubscriptionWhereInput[]
     OR?: SubscriptionWhereInput[]
     NOT?: SubscriptionWhereInput | SubscriptionWhereInput[]
-    id?: UuidFilter<"Subscription"> | string
-    userId?: UuidFilter<"Subscription"> | string
+    id?: StringFilter<"Subscription"> | string
+    userId?: StringFilter<"Subscription"> | string
     stripeId?: StringNullableFilter<"Subscription"> | string | null
     plan?: StringFilter<"Subscription"> | string
     status?: StringFilter<"Subscription"> | string
@@ -19607,8 +19514,8 @@ export namespace Prisma {
     AND?: SubscriptionScalarWhereWithAggregatesInput | SubscriptionScalarWhereWithAggregatesInput[]
     OR?: SubscriptionScalarWhereWithAggregatesInput[]
     NOT?: SubscriptionScalarWhereWithAggregatesInput | SubscriptionScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"Subscription"> | string
-    userId?: UuidWithAggregatesFilter<"Subscription"> | string
+    id?: StringWithAggregatesFilter<"Subscription"> | string
+    userId?: StringWithAggregatesFilter<"Subscription"> | string
     stripeId?: StringNullableWithAggregatesFilter<"Subscription"> | string | null
     plan?: StringWithAggregatesFilter<"Subscription"> | string
     status?: StringWithAggregatesFilter<"Subscription"> | string
@@ -19623,8 +19530,8 @@ export namespace Prisma {
     AND?: ConversationWhereInput | ConversationWhereInput[]
     OR?: ConversationWhereInput[]
     NOT?: ConversationWhereInput | ConversationWhereInput[]
-    id?: UuidFilter<"Conversation"> | string
-    userId?: UuidFilter<"Conversation"> | string
+    id?: StringFilter<"Conversation"> | string
+    userId?: StringFilter<"Conversation"> | string
     title?: StringFilter<"Conversation"> | string
     model?: StringFilter<"Conversation"> | string
     systemPrompt?: StringNullableFilter<"Conversation"> | string | null
@@ -19633,8 +19540,8 @@ export namespace Prisma {
     maxTokens?: IntFilter<"Conversation"> | number
     pinned?: BoolFilter<"Conversation"> | boolean
     archived?: BoolFilter<"Conversation"> | boolean
-    folderId?: UuidNullableFilter<"Conversation"> | string | null
-    parentId?: UuidNullableFilter<"Conversation"> | string | null
+    folderId?: StringNullableFilter<"Conversation"> | string | null
+    parentId?: StringNullableFilter<"Conversation"> | string | null
     tokenCount?: IntFilter<"Conversation"> | number
     createdAt?: DateTimeFilter<"Conversation"> | Date | string
     updatedAt?: DateTimeFilter<"Conversation"> | Date | string
@@ -19675,7 +19582,7 @@ export namespace Prisma {
     AND?: ConversationWhereInput | ConversationWhereInput[]
     OR?: ConversationWhereInput[]
     NOT?: ConversationWhereInput | ConversationWhereInput[]
-    userId?: UuidFilter<"Conversation"> | string
+    userId?: StringFilter<"Conversation"> | string
     title?: StringFilter<"Conversation"> | string
     model?: StringFilter<"Conversation"> | string
     systemPrompt?: StringNullableFilter<"Conversation"> | string | null
@@ -19684,8 +19591,8 @@ export namespace Prisma {
     maxTokens?: IntFilter<"Conversation"> | number
     pinned?: BoolFilter<"Conversation"> | boolean
     archived?: BoolFilter<"Conversation"> | boolean
-    folderId?: UuidNullableFilter<"Conversation"> | string | null
-    parentId?: UuidNullableFilter<"Conversation"> | string | null
+    folderId?: StringNullableFilter<"Conversation"> | string | null
+    parentId?: StringNullableFilter<"Conversation"> | string | null
     tokenCount?: IntFilter<"Conversation"> | number
     createdAt?: DateTimeFilter<"Conversation"> | Date | string
     updatedAt?: DateTimeFilter<"Conversation"> | Date | string
@@ -19724,8 +19631,8 @@ export namespace Prisma {
     AND?: ConversationScalarWhereWithAggregatesInput | ConversationScalarWhereWithAggregatesInput[]
     OR?: ConversationScalarWhereWithAggregatesInput[]
     NOT?: ConversationScalarWhereWithAggregatesInput | ConversationScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"Conversation"> | string
-    userId?: UuidWithAggregatesFilter<"Conversation"> | string
+    id?: StringWithAggregatesFilter<"Conversation"> | string
+    userId?: StringWithAggregatesFilter<"Conversation"> | string
     title?: StringWithAggregatesFilter<"Conversation"> | string
     model?: StringWithAggregatesFilter<"Conversation"> | string
     systemPrompt?: StringNullableWithAggregatesFilter<"Conversation"> | string | null
@@ -19734,8 +19641,8 @@ export namespace Prisma {
     maxTokens?: IntWithAggregatesFilter<"Conversation"> | number
     pinned?: BoolWithAggregatesFilter<"Conversation"> | boolean
     archived?: BoolWithAggregatesFilter<"Conversation"> | boolean
-    folderId?: UuidNullableWithAggregatesFilter<"Conversation"> | string | null
-    parentId?: UuidNullableWithAggregatesFilter<"Conversation"> | string | null
+    folderId?: StringNullableWithAggregatesFilter<"Conversation"> | string | null
+    parentId?: StringNullableWithAggregatesFilter<"Conversation"> | string | null
     tokenCount?: IntWithAggregatesFilter<"Conversation"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Conversation"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Conversation"> | Date | string
@@ -19745,8 +19652,8 @@ export namespace Prisma {
     AND?: FolderWhereInput | FolderWhereInput[]
     OR?: FolderWhereInput[]
     NOT?: FolderWhereInput | FolderWhereInput[]
-    id?: UuidFilter<"Folder"> | string
-    userId?: UuidFilter<"Folder"> | string
+    id?: StringFilter<"Folder"> | string
+    userId?: StringFilter<"Folder"> | string
     name?: StringFilter<"Folder"> | string
     color?: StringFilter<"Folder"> | string
     createdAt?: DateTimeFilter<"Folder"> | Date | string
@@ -19770,7 +19677,7 @@ export namespace Prisma {
     AND?: FolderWhereInput | FolderWhereInput[]
     OR?: FolderWhereInput[]
     NOT?: FolderWhereInput | FolderWhereInput[]
-    userId?: UuidFilter<"Folder"> | string
+    userId?: StringFilter<"Folder"> | string
     name?: StringFilter<"Folder"> | string
     color?: StringFilter<"Folder"> | string
     createdAt?: DateTimeFilter<"Folder"> | Date | string
@@ -19793,8 +19700,8 @@ export namespace Prisma {
     AND?: FolderScalarWhereWithAggregatesInput | FolderScalarWhereWithAggregatesInput[]
     OR?: FolderScalarWhereWithAggregatesInput[]
     NOT?: FolderScalarWhereWithAggregatesInput | FolderScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"Folder"> | string
-    userId?: UuidWithAggregatesFilter<"Folder"> | string
+    id?: StringWithAggregatesFilter<"Folder"> | string
+    userId?: StringWithAggregatesFilter<"Folder"> | string
     name?: StringWithAggregatesFilter<"Folder"> | string
     color?: StringWithAggregatesFilter<"Folder"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Folder"> | Date | string
@@ -19804,12 +19711,12 @@ export namespace Prisma {
     AND?: MessageWhereInput | MessageWhereInput[]
     OR?: MessageWhereInput[]
     NOT?: MessageWhereInput | MessageWhereInput[]
-    id?: UuidFilter<"Message"> | string
-    conversationId?: UuidFilter<"Message"> | string
+    id?: StringFilter<"Message"> | string
+    conversationId?: StringFilter<"Message"> | string
     role?: StringFilter<"Message"> | string
     content?: StringFilter<"Message"> | string
-    toolCalls?: JsonNullableFilter<"Message">
-    toolResults?: JsonNullableFilter<"Message">
+    toolCalls?: StringNullableFilter<"Message"> | string | null
+    toolResults?: StringNullableFilter<"Message"> | string | null
     tokensIn?: IntFilter<"Message"> | number
     tokensOut?: IntFilter<"Message"> | number
     latencyMs?: IntNullableFilter<"Message"> | number | null
@@ -19840,11 +19747,11 @@ export namespace Prisma {
     AND?: MessageWhereInput | MessageWhereInput[]
     OR?: MessageWhereInput[]
     NOT?: MessageWhereInput | MessageWhereInput[]
-    conversationId?: UuidFilter<"Message"> | string
+    conversationId?: StringFilter<"Message"> | string
     role?: StringFilter<"Message"> | string
     content?: StringFilter<"Message"> | string
-    toolCalls?: JsonNullableFilter<"Message">
-    toolResults?: JsonNullableFilter<"Message">
+    toolCalls?: StringNullableFilter<"Message"> | string | null
+    toolResults?: StringNullableFilter<"Message"> | string | null
     tokensIn?: IntFilter<"Message"> | number
     tokensOut?: IntFilter<"Message"> | number
     latencyMs?: IntNullableFilter<"Message"> | number | null
@@ -19878,12 +19785,12 @@ export namespace Prisma {
     AND?: MessageScalarWhereWithAggregatesInput | MessageScalarWhereWithAggregatesInput[]
     OR?: MessageScalarWhereWithAggregatesInput[]
     NOT?: MessageScalarWhereWithAggregatesInput | MessageScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"Message"> | string
-    conversationId?: UuidWithAggregatesFilter<"Message"> | string
+    id?: StringWithAggregatesFilter<"Message"> | string
+    conversationId?: StringWithAggregatesFilter<"Message"> | string
     role?: StringWithAggregatesFilter<"Message"> | string
     content?: StringWithAggregatesFilter<"Message"> | string
-    toolCalls?: JsonNullableWithAggregatesFilter<"Message">
-    toolResults?: JsonNullableWithAggregatesFilter<"Message">
+    toolCalls?: StringNullableWithAggregatesFilter<"Message"> | string | null
+    toolResults?: StringNullableWithAggregatesFilter<"Message"> | string | null
     tokensIn?: IntWithAggregatesFilter<"Message"> | number
     tokensOut?: IntWithAggregatesFilter<"Message"> | number
     latencyMs?: IntNullableWithAggregatesFilter<"Message"> | number | null
@@ -19896,8 +19803,8 @@ export namespace Prisma {
     AND?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[]
     OR?: KnowledgeBaseWhereInput[]
     NOT?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[]
-    id?: UuidFilter<"KnowledgeBase"> | string
-    userId?: UuidFilter<"KnowledgeBase"> | string
+    id?: StringFilter<"KnowledgeBase"> | string
+    userId?: StringFilter<"KnowledgeBase"> | string
     name?: StringFilter<"KnowledgeBase"> | string
     description?: StringNullableFilter<"KnowledgeBase"> | string | null
     chunkSize?: IntFilter<"KnowledgeBase"> | number
@@ -19928,7 +19835,7 @@ export namespace Prisma {
     AND?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[]
     OR?: KnowledgeBaseWhereInput[]
     NOT?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[]
-    userId?: UuidFilter<"KnowledgeBase"> | string
+    userId?: StringFilter<"KnowledgeBase"> | string
     name?: StringFilter<"KnowledgeBase"> | string
     description?: StringNullableFilter<"KnowledgeBase"> | string | null
     chunkSize?: IntFilter<"KnowledgeBase"> | number
@@ -19961,8 +19868,8 @@ export namespace Prisma {
     AND?: KnowledgeBaseScalarWhereWithAggregatesInput | KnowledgeBaseScalarWhereWithAggregatesInput[]
     OR?: KnowledgeBaseScalarWhereWithAggregatesInput[]
     NOT?: KnowledgeBaseScalarWhereWithAggregatesInput | KnowledgeBaseScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"KnowledgeBase"> | string
-    userId?: UuidWithAggregatesFilter<"KnowledgeBase"> | string
+    id?: StringWithAggregatesFilter<"KnowledgeBase"> | string
+    userId?: StringWithAggregatesFilter<"KnowledgeBase"> | string
     name?: StringWithAggregatesFilter<"KnowledgeBase"> | string
     description?: StringNullableWithAggregatesFilter<"KnowledgeBase"> | string | null
     chunkSize?: IntWithAggregatesFilter<"KnowledgeBase"> | number
@@ -19976,8 +19883,8 @@ export namespace Prisma {
     AND?: DocumentWhereInput | DocumentWhereInput[]
     OR?: DocumentWhereInput[]
     NOT?: DocumentWhereInput | DocumentWhereInput[]
-    id?: UuidFilter<"Document"> | string
-    knowledgeBaseId?: UuidFilter<"Document"> | string
+    id?: StringFilter<"Document"> | string
+    knowledgeBaseId?: StringFilter<"Document"> | string
     filename?: StringFilter<"Document"> | string
     originalName?: StringFilter<"Document"> | string
     mimeType?: StringFilter<"Document"> | string
@@ -20012,7 +19919,7 @@ export namespace Prisma {
     AND?: DocumentWhereInput | DocumentWhereInput[]
     OR?: DocumentWhereInput[]
     NOT?: DocumentWhereInput | DocumentWhereInput[]
-    knowledgeBaseId?: UuidFilter<"Document"> | string
+    knowledgeBaseId?: StringFilter<"Document"> | string
     filename?: StringFilter<"Document"> | string
     originalName?: StringFilter<"Document"> | string
     mimeType?: StringFilter<"Document"> | string
@@ -20049,8 +19956,8 @@ export namespace Prisma {
     AND?: DocumentScalarWhereWithAggregatesInput | DocumentScalarWhereWithAggregatesInput[]
     OR?: DocumentScalarWhereWithAggregatesInput[]
     NOT?: DocumentScalarWhereWithAggregatesInput | DocumentScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"Document"> | string
-    knowledgeBaseId?: UuidWithAggregatesFilter<"Document"> | string
+    id?: StringWithAggregatesFilter<"Document"> | string
+    knowledgeBaseId?: StringWithAggregatesFilter<"Document"> | string
     filename?: StringWithAggregatesFilter<"Document"> | string
     originalName?: StringWithAggregatesFilter<"Document"> | string
     mimeType?: StringWithAggregatesFilter<"Document"> | string
@@ -20066,8 +19973,8 @@ export namespace Prisma {
     AND?: ChunkWhereInput | ChunkWhereInput[]
     OR?: ChunkWhereInput[]
     NOT?: ChunkWhereInput | ChunkWhereInput[]
-    id?: UuidFilter<"Chunk"> | string
-    documentId?: UuidFilter<"Chunk"> | string
+    id?: StringFilter<"Chunk"> | string
+    documentId?: StringFilter<"Chunk"> | string
     index?: IntFilter<"Chunk"> | number
     content?: StringFilter<"Chunk"> | string
     embedding?: StringNullableFilter<"Chunk"> | string | null
@@ -20088,7 +19995,7 @@ export namespace Prisma {
     AND?: ChunkWhereInput | ChunkWhereInput[]
     OR?: ChunkWhereInput[]
     NOT?: ChunkWhereInput | ChunkWhereInput[]
-    documentId?: UuidFilter<"Chunk"> | string
+    documentId?: StringFilter<"Chunk"> | string
     index?: IntFilter<"Chunk"> | number
     content?: StringFilter<"Chunk"> | string
     embedding?: StringNullableFilter<"Chunk"> | string | null
@@ -20112,8 +20019,8 @@ export namespace Prisma {
     AND?: ChunkScalarWhereWithAggregatesInput | ChunkScalarWhereWithAggregatesInput[]
     OR?: ChunkScalarWhereWithAggregatesInput[]
     NOT?: ChunkScalarWhereWithAggregatesInput | ChunkScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"Chunk"> | string
-    documentId?: UuidWithAggregatesFilter<"Chunk"> | string
+    id?: StringWithAggregatesFilter<"Chunk"> | string
+    documentId?: StringWithAggregatesFilter<"Chunk"> | string
     index?: IntWithAggregatesFilter<"Chunk"> | number
     content?: StringWithAggregatesFilter<"Chunk"> | string
     embedding?: StringNullableWithAggregatesFilter<"Chunk"> | string | null
@@ -20123,13 +20030,13 @@ export namespace Prisma {
     AND?: PromptTemplateWhereInput | PromptTemplateWhereInput[]
     OR?: PromptTemplateWhereInput[]
     NOT?: PromptTemplateWhereInput | PromptTemplateWhereInput[]
-    id?: UuidFilter<"PromptTemplate"> | string
-    userId?: UuidFilter<"PromptTemplate"> | string
+    id?: StringFilter<"PromptTemplate"> | string
+    userId?: StringFilter<"PromptTemplate"> | string
     name?: StringFilter<"PromptTemplate"> | string
     content?: StringFilter<"PromptTemplate"> | string
     model?: StringNullableFilter<"PromptTemplate"> | string | null
     isPublic?: BoolFilter<"PromptTemplate"> | boolean
-    tags?: StringNullableListFilter<"PromptTemplate">
+    tags?: StringFilter<"PromptTemplate"> | string
     usageCount?: IntFilter<"PromptTemplate"> | number
     createdAt?: DateTimeFilter<"PromptTemplate"> | Date | string
     updatedAt?: DateTimeFilter<"PromptTemplate"> | Date | string
@@ -20155,12 +20062,12 @@ export namespace Prisma {
     AND?: PromptTemplateWhereInput | PromptTemplateWhereInput[]
     OR?: PromptTemplateWhereInput[]
     NOT?: PromptTemplateWhereInput | PromptTemplateWhereInput[]
-    userId?: UuidFilter<"PromptTemplate"> | string
+    userId?: StringFilter<"PromptTemplate"> | string
     name?: StringFilter<"PromptTemplate"> | string
     content?: StringFilter<"PromptTemplate"> | string
     model?: StringNullableFilter<"PromptTemplate"> | string | null
     isPublic?: BoolFilter<"PromptTemplate"> | boolean
-    tags?: StringNullableListFilter<"PromptTemplate">
+    tags?: StringFilter<"PromptTemplate"> | string
     usageCount?: IntFilter<"PromptTemplate"> | number
     createdAt?: DateTimeFilter<"PromptTemplate"> | Date | string
     updatedAt?: DateTimeFilter<"PromptTemplate"> | Date | string
@@ -20189,13 +20096,13 @@ export namespace Prisma {
     AND?: PromptTemplateScalarWhereWithAggregatesInput | PromptTemplateScalarWhereWithAggregatesInput[]
     OR?: PromptTemplateScalarWhereWithAggregatesInput[]
     NOT?: PromptTemplateScalarWhereWithAggregatesInput | PromptTemplateScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"PromptTemplate"> | string
-    userId?: UuidWithAggregatesFilter<"PromptTemplate"> | string
+    id?: StringWithAggregatesFilter<"PromptTemplate"> | string
+    userId?: StringWithAggregatesFilter<"PromptTemplate"> | string
     name?: StringWithAggregatesFilter<"PromptTemplate"> | string
     content?: StringWithAggregatesFilter<"PromptTemplate"> | string
     model?: StringNullableWithAggregatesFilter<"PromptTemplate"> | string | null
     isPublic?: BoolWithAggregatesFilter<"PromptTemplate"> | boolean
-    tags?: StringNullableListFilter<"PromptTemplate">
+    tags?: StringWithAggregatesFilter<"PromptTemplate"> | string
     usageCount?: IntWithAggregatesFilter<"PromptTemplate"> | number
     createdAt?: DateTimeWithAggregatesFilter<"PromptTemplate"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PromptTemplate"> | Date | string
@@ -20205,9 +20112,9 @@ export namespace Prisma {
     AND?: UsageLogWhereInput | UsageLogWhereInput[]
     OR?: UsageLogWhereInput[]
     NOT?: UsageLogWhereInput | UsageLogWhereInput[]
-    id?: UuidFilter<"UsageLog"> | string
-    userId?: UuidFilter<"UsageLog"> | string
-    conversationId?: UuidNullableFilter<"UsageLog"> | string | null
+    id?: StringFilter<"UsageLog"> | string
+    userId?: StringFilter<"UsageLog"> | string
+    conversationId?: StringNullableFilter<"UsageLog"> | string | null
     model?: StringFilter<"UsageLog"> | string
     provider?: StringFilter<"UsageLog"> | string
     tokensIn?: IntFilter<"UsageLog"> | number
@@ -20245,8 +20152,8 @@ export namespace Prisma {
     AND?: UsageLogWhereInput | UsageLogWhereInput[]
     OR?: UsageLogWhereInput[]
     NOT?: UsageLogWhereInput | UsageLogWhereInput[]
-    userId?: UuidFilter<"UsageLog"> | string
-    conversationId?: UuidNullableFilter<"UsageLog"> | string | null
+    userId?: StringFilter<"UsageLog"> | string
+    conversationId?: StringNullableFilter<"UsageLog"> | string | null
     model?: StringFilter<"UsageLog"> | string
     provider?: StringFilter<"UsageLog"> | string
     tokensIn?: IntFilter<"UsageLog"> | number
@@ -20286,9 +20193,9 @@ export namespace Prisma {
     AND?: UsageLogScalarWhereWithAggregatesInput | UsageLogScalarWhereWithAggregatesInput[]
     OR?: UsageLogScalarWhereWithAggregatesInput[]
     NOT?: UsageLogScalarWhereWithAggregatesInput | UsageLogScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"UsageLog"> | string
-    userId?: UuidWithAggregatesFilter<"UsageLog"> | string
-    conversationId?: UuidNullableWithAggregatesFilter<"UsageLog"> | string | null
+    id?: StringWithAggregatesFilter<"UsageLog"> | string
+    userId?: StringWithAggregatesFilter<"UsageLog"> | string
+    conversationId?: StringNullableWithAggregatesFilter<"UsageLog"> | string | null
     model?: StringWithAggregatesFilter<"UsageLog"> | string
     provider?: StringWithAggregatesFilter<"UsageLog"> | string
     tokensIn?: IntWithAggregatesFilter<"UsageLog"> | number
@@ -21041,8 +20948,8 @@ export namespace Prisma {
     id?: string
     role: string
     content: string
-    toolCalls?: NullableJsonNullValueInput | InputJsonValue
-    toolResults?: NullableJsonNullValueInput | InputJsonValue
+    toolCalls?: string | null
+    toolResults?: string | null
     tokensIn?: number
     tokensOut?: number
     latencyMs?: number | null
@@ -21057,8 +20964,8 @@ export namespace Prisma {
     conversationId: string
     role: string
     content: string
-    toolCalls?: NullableJsonNullValueInput | InputJsonValue
-    toolResults?: NullableJsonNullValueInput | InputJsonValue
+    toolCalls?: string | null
+    toolResults?: string | null
     tokensIn?: number
     tokensOut?: number
     latencyMs?: number | null
@@ -21071,8 +20978,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    toolCalls?: NullableJsonNullValueInput | InputJsonValue
-    toolResults?: NullableJsonNullValueInput | InputJsonValue
+    toolCalls?: NullableStringFieldUpdateOperationsInput | string | null
+    toolResults?: NullableStringFieldUpdateOperationsInput | string | null
     tokensIn?: IntFieldUpdateOperationsInput | number
     tokensOut?: IntFieldUpdateOperationsInput | number
     latencyMs?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21087,8 +20994,8 @@ export namespace Prisma {
     conversationId?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    toolCalls?: NullableJsonNullValueInput | InputJsonValue
-    toolResults?: NullableJsonNullValueInput | InputJsonValue
+    toolCalls?: NullableStringFieldUpdateOperationsInput | string | null
+    toolResults?: NullableStringFieldUpdateOperationsInput | string | null
     tokensIn?: IntFieldUpdateOperationsInput | number
     tokensOut?: IntFieldUpdateOperationsInput | number
     latencyMs?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21102,8 +21009,8 @@ export namespace Prisma {
     conversationId: string
     role: string
     content: string
-    toolCalls?: NullableJsonNullValueInput | InputJsonValue
-    toolResults?: NullableJsonNullValueInput | InputJsonValue
+    toolCalls?: string | null
+    toolResults?: string | null
     tokensIn?: number
     tokensOut?: number
     latencyMs?: number | null
@@ -21116,8 +21023,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    toolCalls?: NullableJsonNullValueInput | InputJsonValue
-    toolResults?: NullableJsonNullValueInput | InputJsonValue
+    toolCalls?: NullableStringFieldUpdateOperationsInput | string | null
+    toolResults?: NullableStringFieldUpdateOperationsInput | string | null
     tokensIn?: IntFieldUpdateOperationsInput | number
     tokensOut?: IntFieldUpdateOperationsInput | number
     latencyMs?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21131,8 +21038,8 @@ export namespace Prisma {
     conversationId?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    toolCalls?: NullableJsonNullValueInput | InputJsonValue
-    toolResults?: NullableJsonNullValueInput | InputJsonValue
+    toolCalls?: NullableStringFieldUpdateOperationsInput | string | null
+    toolResults?: NullableStringFieldUpdateOperationsInput | string | null
     tokensIn?: IntFieldUpdateOperationsInput | number
     tokensOut?: IntFieldUpdateOperationsInput | number
     latencyMs?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21390,7 +21297,7 @@ export namespace Prisma {
     content: string
     model?: string | null
     isPublic?: boolean
-    tags?: PromptTemplateCreatetagsInput | string[]
+    tags: string
     usageCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -21404,7 +21311,7 @@ export namespace Prisma {
     content: string
     model?: string | null
     isPublic?: boolean
-    tags?: PromptTemplateCreatetagsInput | string[]
+    tags: string
     usageCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -21416,7 +21323,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     model?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
-    tags?: PromptTemplateUpdatetagsInput | string[]
+    tags?: StringFieldUpdateOperationsInput | string
     usageCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21430,7 +21337,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     model?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
-    tags?: PromptTemplateUpdatetagsInput | string[]
+    tags?: StringFieldUpdateOperationsInput | string
     usageCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21443,7 +21350,7 @@ export namespace Prisma {
     content: string
     model?: string | null
     isPublic?: boolean
-    tags?: PromptTemplateCreatetagsInput | string[]
+    tags: string
     usageCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -21455,7 +21362,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     model?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
-    tags?: PromptTemplateUpdatetagsInput | string[]
+    tags?: StringFieldUpdateOperationsInput | string
     usageCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21468,7 +21375,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     model?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
-    tags?: PromptTemplateUpdatetagsInput | string[]
+    tags?: StringFieldUpdateOperationsInput | string
     usageCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21661,22 +21568,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UuidFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedUuidFilter<$PrismaModel> | string
-  }
-
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -21684,14 +21579,13 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -21699,14 +21593,13 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -21716,8 +21609,8 @@ export namespace Prisma {
 
   export type BigIntFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
-    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[]
+    notIn?: bigint[] | number[]
     lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
@@ -21732,8 +21625,8 @@ export namespace Prisma {
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -21743,8 +21636,8 @@ export namespace Prisma {
 
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -21903,25 +21796,10 @@ export namespace Prisma {
     totalTokens?: SortOrder
   }
 
-  export type UuidWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedUuidWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -21929,7 +21807,6 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
     not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
@@ -21938,8 +21815,8 @@ export namespace Prisma {
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -21947,7 +21824,6 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
     not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
@@ -21956,8 +21832,8 @@ export namespace Prisma {
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -21972,8 +21848,8 @@ export namespace Prisma {
 
   export type BigIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
-    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[]
+    notIn?: bigint[] | number[]
     lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
@@ -21996,8 +21872,8 @@ export namespace Prisma {
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -22010,8 +21886,8 @@ export namespace Prisma {
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -22024,8 +21900,8 @@ export namespace Prisma {
 
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -22098,8 +21974,8 @@ export namespace Prisma {
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -22212,25 +22088,13 @@ export namespace Prisma {
 
   export type FloatFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type UuidNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedUuidNullableFilter<$PrismaModel> | string | null
   }
 
   export type FolderNullableScalarRelationFilter = {
@@ -22323,8 +22187,8 @@ export namespace Prisma {
 
   export type FloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
@@ -22335,21 +22199,6 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
-  }
-
-  export type UuidNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedUuidNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type FolderUserIdNameCompoundUniqueInput = {
@@ -22379,29 +22228,6 @@ export namespace Prisma {
     name?: SortOrder
     color?: SortOrder
     createdAt?: SortOrder
-  }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type ConversationScalarRelationFilter = {
@@ -22435,6 +22261,8 @@ export namespace Prisma {
     conversationId?: SortOrder
     role?: SortOrder
     content?: SortOrder
+    toolCalls?: SortOrder
+    toolResults?: SortOrder
     tokensIn?: SortOrder
     tokensOut?: SortOrder
     latencyMs?: SortOrder
@@ -22448,6 +22276,8 @@ export namespace Prisma {
     conversationId?: SortOrder
     role?: SortOrder
     content?: SortOrder
+    toolCalls?: SortOrder
+    toolResults?: SortOrder
     tokensIn?: SortOrder
     tokensOut?: SortOrder
     latencyMs?: SortOrder
@@ -22460,32 +22290,6 @@ export namespace Prisma {
     tokensIn?: SortOrder
     tokensOut?: SortOrder
     latencyMs?: SortOrder
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type DocumentListRelationFilter = {
@@ -22648,14 +22452,6 @@ export namespace Prisma {
     index?: SortOrder
   }
 
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
-  }
-
   export type PromptTemplateCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -22680,6 +22476,7 @@ export namespace Prisma {
     content?: SortOrder
     model?: SortOrder
     isPublic?: SortOrder
+    tags?: SortOrder
     usageCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -22692,6 +22489,7 @@ export namespace Prisma {
     content?: SortOrder
     model?: SortOrder
     isPublic?: SortOrder
+    tags?: SortOrder
     usageCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -23650,19 +23448,10 @@ export namespace Prisma {
     update?: XOR<XOR<DocumentUpdateToOneWithWhereWithoutChunksInput, DocumentUpdateWithoutChunksInput>, DocumentUncheckedUpdateWithoutChunksInput>
   }
 
-  export type PromptTemplateCreatetagsInput = {
-    set: string[]
-  }
-
   export type UserCreateNestedOneWithoutPromptTemplatesInput = {
     create?: XOR<UserCreateWithoutPromptTemplatesInput, UserUncheckedCreateWithoutPromptTemplatesInput>
     connectOrCreate?: UserCreateOrConnectWithoutPromptTemplatesInput
     connect?: UserWhereUniqueInput
-  }
-
-  export type PromptTemplateUpdatetagsInput = {
-    set?: string[]
-    push?: string | string[]
   }
 
   export type UserUpdateOneRequiredWithoutPromptTemplatesNestedInput = {
@@ -23703,21 +23492,10 @@ export namespace Prisma {
     update?: XOR<XOR<ConversationUpdateToOneWithWhereWithoutUsagesInput, ConversationUpdateWithoutUsagesInput>, ConversationUncheckedUpdateWithoutUsagesInput>
   }
 
-  export type NestedUuidFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedUuidFilter<$PrismaModel> | string
-  }
-
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -23730,8 +23508,8 @@ export namespace Prisma {
 
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -23744,8 +23522,8 @@ export namespace Prisma {
 
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -23755,8 +23533,8 @@ export namespace Prisma {
 
   export type NestedBigIntFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
-    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[]
+    notIn?: bigint[] | number[]
     lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
@@ -23771,8 +23549,8 @@ export namespace Prisma {
 
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -23782,8 +23560,8 @@ export namespace Prisma {
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -23791,24 +23569,10 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type NestedUuidWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedUuidWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -23824,8 +23588,8 @@ export namespace Prisma {
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -23841,8 +23605,8 @@ export namespace Prisma {
 
   export type NestedIntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -23852,8 +23616,8 @@ export namespace Prisma {
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -23868,8 +23632,8 @@ export namespace Prisma {
 
   export type NestedFloatFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
@@ -23879,8 +23643,8 @@ export namespace Prisma {
 
   export type NestedBigIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
-    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[]
+    notIn?: bigint[] | number[]
     lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
@@ -23903,8 +23667,8 @@ export namespace Prisma {
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -23917,8 +23681,8 @@ export namespace Prisma {
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -23931,8 +23695,8 @@ export namespace Prisma {
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -23947,8 +23711,8 @@ export namespace Prisma {
 
   export type NestedFloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
@@ -23956,21 +23720,10 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedUuidNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedUuidNullableFilter<$PrismaModel> | string | null
-  }
-
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
@@ -23981,43 +23734,6 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
-  }
-
-  export type NestedUuidNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedUuidNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -24055,7 +23771,6 @@ export namespace Prisma {
 
   export type AccountCreateManyUserInputEnvelope = {
     data: AccountCreateManyUserInput | AccountCreateManyUserInput[]
-    skipDuplicates?: boolean
   }
 
   export type SessionCreateWithoutUserInput = {
@@ -24077,7 +23792,6 @@ export namespace Prisma {
 
   export type SessionCreateManyUserInputEnvelope = {
     data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
-    skipDuplicates?: boolean
   }
 
   export type ConversationCreateWithoutUserInput = {
@@ -24127,7 +23841,6 @@ export namespace Prisma {
 
   export type ConversationCreateManyUserInputEnvelope = {
     data: ConversationCreateManyUserInput | ConversationCreateManyUserInput[]
-    skipDuplicates?: boolean
   }
 
   export type KnowledgeBaseCreateWithoutUserInput = {
@@ -24161,7 +23874,6 @@ export namespace Prisma {
 
   export type KnowledgeBaseCreateManyUserInputEnvelope = {
     data: KnowledgeBaseCreateManyUserInput | KnowledgeBaseCreateManyUserInput[]
-    skipDuplicates?: boolean
   }
 
   export type PromptTemplateCreateWithoutUserInput = {
@@ -24170,7 +23882,7 @@ export namespace Prisma {
     content: string
     model?: string | null
     isPublic?: boolean
-    tags?: PromptTemplateCreatetagsInput | string[]
+    tags: string
     usageCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24182,7 +23894,7 @@ export namespace Prisma {
     content: string
     model?: string | null
     isPublic?: boolean
-    tags?: PromptTemplateCreatetagsInput | string[]
+    tags: string
     usageCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24195,7 +23907,6 @@ export namespace Prisma {
 
   export type PromptTemplateCreateManyUserInputEnvelope = {
     data: PromptTemplateCreateManyUserInput | PromptTemplateCreateManyUserInput[]
-    skipDuplicates?: boolean
   }
 
   export type UsageLogCreateWithoutUserInput = {
@@ -24235,7 +23946,6 @@ export namespace Prisma {
 
   export type UsageLogCreateManyUserInputEnvelope = {
     data: UsageLogCreateManyUserInput | UsageLogCreateManyUserInput[]
-    skipDuplicates?: boolean
   }
 
   export type ApiKeyCreateWithoutUserInput = {
@@ -24265,7 +23975,6 @@ export namespace Prisma {
 
   export type ApiKeyCreateManyUserInputEnvelope = {
     data: ApiKeyCreateManyUserInput | ApiKeyCreateManyUserInput[]
-    skipDuplicates?: boolean
   }
 
   export type SubscriptionCreateWithoutUserInput = {
@@ -24320,7 +24029,6 @@ export namespace Prisma {
 
   export type FolderCreateManyUserInputEnvelope = {
     data: FolderCreateManyUserInput | FolderCreateManyUserInput[]
-    skipDuplicates?: boolean
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -24343,8 +24051,8 @@ export namespace Prisma {
     AND?: AccountScalarWhereInput | AccountScalarWhereInput[]
     OR?: AccountScalarWhereInput[]
     NOT?: AccountScalarWhereInput | AccountScalarWhereInput[]
-    id?: UuidFilter<"Account"> | string
-    userId?: UuidFilter<"Account"> | string
+    id?: StringFilter<"Account"> | string
+    userId?: StringFilter<"Account"> | string
     type?: StringFilter<"Account"> | string
     provider?: StringFilter<"Account"> | string
     providerAccountId?: StringFilter<"Account"> | string
@@ -24377,9 +24085,9 @@ export namespace Prisma {
     AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
     OR?: SessionScalarWhereInput[]
     NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    id?: UuidFilter<"Session"> | string
+    id?: StringFilter<"Session"> | string
     sessionToken?: StringFilter<"Session"> | string
-    userId?: UuidFilter<"Session"> | string
+    userId?: StringFilter<"Session"> | string
     expires?: DateTimeFilter<"Session"> | Date | string
   }
 
@@ -24403,8 +24111,8 @@ export namespace Prisma {
     AND?: ConversationScalarWhereInput | ConversationScalarWhereInput[]
     OR?: ConversationScalarWhereInput[]
     NOT?: ConversationScalarWhereInput | ConversationScalarWhereInput[]
-    id?: UuidFilter<"Conversation"> | string
-    userId?: UuidFilter<"Conversation"> | string
+    id?: StringFilter<"Conversation"> | string
+    userId?: StringFilter<"Conversation"> | string
     title?: StringFilter<"Conversation"> | string
     model?: StringFilter<"Conversation"> | string
     systemPrompt?: StringNullableFilter<"Conversation"> | string | null
@@ -24413,8 +24121,8 @@ export namespace Prisma {
     maxTokens?: IntFilter<"Conversation"> | number
     pinned?: BoolFilter<"Conversation"> | boolean
     archived?: BoolFilter<"Conversation"> | boolean
-    folderId?: UuidNullableFilter<"Conversation"> | string | null
-    parentId?: UuidNullableFilter<"Conversation"> | string | null
+    folderId?: StringNullableFilter<"Conversation"> | string | null
+    parentId?: StringNullableFilter<"Conversation"> | string | null
     tokenCount?: IntFilter<"Conversation"> | number
     createdAt?: DateTimeFilter<"Conversation"> | Date | string
     updatedAt?: DateTimeFilter<"Conversation"> | Date | string
@@ -24440,8 +24148,8 @@ export namespace Prisma {
     AND?: KnowledgeBaseScalarWhereInput | KnowledgeBaseScalarWhereInput[]
     OR?: KnowledgeBaseScalarWhereInput[]
     NOT?: KnowledgeBaseScalarWhereInput | KnowledgeBaseScalarWhereInput[]
-    id?: UuidFilter<"KnowledgeBase"> | string
-    userId?: UuidFilter<"KnowledgeBase"> | string
+    id?: StringFilter<"KnowledgeBase"> | string
+    userId?: StringFilter<"KnowledgeBase"> | string
     name?: StringFilter<"KnowledgeBase"> | string
     description?: StringNullableFilter<"KnowledgeBase"> | string | null
     chunkSize?: IntFilter<"KnowledgeBase"> | number
@@ -24471,13 +24179,13 @@ export namespace Prisma {
     AND?: PromptTemplateScalarWhereInput | PromptTemplateScalarWhereInput[]
     OR?: PromptTemplateScalarWhereInput[]
     NOT?: PromptTemplateScalarWhereInput | PromptTemplateScalarWhereInput[]
-    id?: UuidFilter<"PromptTemplate"> | string
-    userId?: UuidFilter<"PromptTemplate"> | string
+    id?: StringFilter<"PromptTemplate"> | string
+    userId?: StringFilter<"PromptTemplate"> | string
     name?: StringFilter<"PromptTemplate"> | string
     content?: StringFilter<"PromptTemplate"> | string
     model?: StringNullableFilter<"PromptTemplate"> | string | null
     isPublic?: BoolFilter<"PromptTemplate"> | boolean
-    tags?: StringNullableListFilter<"PromptTemplate">
+    tags?: StringFilter<"PromptTemplate"> | string
     usageCount?: IntFilter<"PromptTemplate"> | number
     createdAt?: DateTimeFilter<"PromptTemplate"> | Date | string
     updatedAt?: DateTimeFilter<"PromptTemplate"> | Date | string
@@ -24503,9 +24211,9 @@ export namespace Prisma {
     AND?: UsageLogScalarWhereInput | UsageLogScalarWhereInput[]
     OR?: UsageLogScalarWhereInput[]
     NOT?: UsageLogScalarWhereInput | UsageLogScalarWhereInput[]
-    id?: UuidFilter<"UsageLog"> | string
-    userId?: UuidFilter<"UsageLog"> | string
-    conversationId?: UuidNullableFilter<"UsageLog"> | string | null
+    id?: StringFilter<"UsageLog"> | string
+    userId?: StringFilter<"UsageLog"> | string
+    conversationId?: StringNullableFilter<"UsageLog"> | string | null
     model?: StringFilter<"UsageLog"> | string
     provider?: StringFilter<"UsageLog"> | string
     tokensIn?: IntFilter<"UsageLog"> | number
@@ -24538,8 +24246,8 @@ export namespace Prisma {
     AND?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
     OR?: ApiKeyScalarWhereInput[]
     NOT?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
-    id?: UuidFilter<"ApiKey"> | string
-    userId?: UuidFilter<"ApiKey"> | string
+    id?: StringFilter<"ApiKey"> | string
+    userId?: StringFilter<"ApiKey"> | string
     provider?: StringFilter<"ApiKey"> | string
     keyPrefix?: StringFilter<"ApiKey"> | string
     keyHash?: StringFilter<"ApiKey"> | string
@@ -24603,8 +24311,8 @@ export namespace Prisma {
     AND?: FolderScalarWhereInput | FolderScalarWhereInput[]
     OR?: FolderScalarWhereInput[]
     NOT?: FolderScalarWhereInput | FolderScalarWhereInput[]
-    id?: UuidFilter<"Folder"> | string
-    userId?: UuidFilter<"Folder"> | string
+    id?: StringFilter<"Folder"> | string
+    userId?: StringFilter<"Folder"> | string
     name?: StringFilter<"Folder"> | string
     color?: StringFilter<"Folder"> | string
     createdAt?: DateTimeFilter<"Folder"> | Date | string
@@ -25242,15 +24950,14 @@ export namespace Prisma {
 
   export type ConversationCreateManyParentInputEnvelope = {
     data: ConversationCreateManyParentInput | ConversationCreateManyParentInput[]
-    skipDuplicates?: boolean
   }
 
   export type MessageCreateWithoutConversationInput = {
     id?: string
     role: string
     content: string
-    toolCalls?: NullableJsonNullValueInput | InputJsonValue
-    toolResults?: NullableJsonNullValueInput | InputJsonValue
+    toolCalls?: string | null
+    toolResults?: string | null
     tokensIn?: number
     tokensOut?: number
     latencyMs?: number | null
@@ -25263,8 +24970,8 @@ export namespace Prisma {
     id?: string
     role: string
     content: string
-    toolCalls?: NullableJsonNullValueInput | InputJsonValue
-    toolResults?: NullableJsonNullValueInput | InputJsonValue
+    toolCalls?: string | null
+    toolResults?: string | null
     tokensIn?: number
     tokensOut?: number
     latencyMs?: number | null
@@ -25280,7 +24987,6 @@ export namespace Prisma {
 
   export type MessageCreateManyConversationInputEnvelope = {
     data: MessageCreateManyConversationInput | MessageCreateManyConversationInput[]
-    skipDuplicates?: boolean
   }
 
   export type UsageLogCreateWithoutConversationInput = {
@@ -25320,7 +25026,6 @@ export namespace Prisma {
 
   export type UsageLogCreateManyConversationInputEnvelope = {
     data: UsageLogCreateManyConversationInput | UsageLogCreateManyConversationInput[]
-    skipDuplicates?: boolean
   }
 
   export type UserUpsertWithoutConversationsInput = {
@@ -25498,12 +25203,12 @@ export namespace Prisma {
     AND?: MessageScalarWhereInput | MessageScalarWhereInput[]
     OR?: MessageScalarWhereInput[]
     NOT?: MessageScalarWhereInput | MessageScalarWhereInput[]
-    id?: UuidFilter<"Message"> | string
-    conversationId?: UuidFilter<"Message"> | string
+    id?: StringFilter<"Message"> | string
+    conversationId?: StringFilter<"Message"> | string
     role?: StringFilter<"Message"> | string
     content?: StringFilter<"Message"> | string
-    toolCalls?: JsonNullableFilter<"Message">
-    toolResults?: JsonNullableFilter<"Message">
+    toolCalls?: StringNullableFilter<"Message"> | string | null
+    toolResults?: StringNullableFilter<"Message"> | string | null
     tokensIn?: IntFilter<"Message"> | number
     tokensOut?: IntFilter<"Message"> | number
     latencyMs?: IntNullableFilter<"Message"> | number | null
@@ -25630,7 +25335,6 @@ export namespace Prisma {
 
   export type ConversationCreateManyFolderInputEnvelope = {
     data: ConversationCreateManyFolderInput | ConversationCreateManyFolderInput[]
-    skipDuplicates?: boolean
   }
 
   export type UserUpsertWithoutFoldersInput = {
@@ -25896,7 +25600,6 @@ export namespace Prisma {
 
   export type DocumentCreateManyKnowledgeBaseInputEnvelope = {
     data: DocumentCreateManyKnowledgeBaseInput | DocumentCreateManyKnowledgeBaseInput[]
-    skipDuplicates?: boolean
   }
 
   export type UserUpsertWithoutKnowledgeBasesInput = {
@@ -25980,8 +25683,8 @@ export namespace Prisma {
     AND?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
     OR?: DocumentScalarWhereInput[]
     NOT?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
-    id?: UuidFilter<"Document"> | string
-    knowledgeBaseId?: UuidFilter<"Document"> | string
+    id?: StringFilter<"Document"> | string
+    knowledgeBaseId?: StringFilter<"Document"> | string
     filename?: StringFilter<"Document"> | string
     originalName?: StringFilter<"Document"> | string
     mimeType?: StringFilter<"Document"> | string
@@ -26043,7 +25746,6 @@ export namespace Prisma {
 
   export type ChunkCreateManyDocumentInputEnvelope = {
     data: ChunkCreateManyDocumentInput | ChunkCreateManyDocumentInput[]
-    skipDuplicates?: boolean
   }
 
   export type KnowledgeBaseUpsertWithoutDocumentsInput = {
@@ -26101,8 +25803,8 @@ export namespace Prisma {
     AND?: ChunkScalarWhereInput | ChunkScalarWhereInput[]
     OR?: ChunkScalarWhereInput[]
     NOT?: ChunkScalarWhereInput | ChunkScalarWhereInput[]
-    id?: UuidFilter<"Chunk"> | string
-    documentId?: UuidFilter<"Chunk"> | string
+    id?: StringFilter<"Chunk"> | string
+    documentId?: StringFilter<"Chunk"> | string
     index?: IntFilter<"Chunk"> | number
     content?: StringFilter<"Chunk"> | string
     embedding?: StringNullableFilter<"Chunk"> | string | null
@@ -26562,7 +26264,7 @@ export namespace Prisma {
     content: string
     model?: string | null
     isPublic?: boolean
-    tags?: PromptTemplateCreatetagsInput | string[]
+    tags: string
     usageCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26758,7 +26460,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     model?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
-    tags?: PromptTemplateUpdatetagsInput | string[]
+    tags?: StringFieldUpdateOperationsInput | string
     usageCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26770,7 +26472,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     model?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
-    tags?: PromptTemplateUpdatetagsInput | string[]
+    tags?: StringFieldUpdateOperationsInput | string
     usageCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26782,7 +26484,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     model?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
-    tags?: PromptTemplateUpdatetagsInput | string[]
+    tags?: StringFieldUpdateOperationsInput | string
     usageCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26907,8 +26609,8 @@ export namespace Prisma {
     id?: string
     role: string
     content: string
-    toolCalls?: NullableJsonNullValueInput | InputJsonValue
-    toolResults?: NullableJsonNullValueInput | InputJsonValue
+    toolCalls?: string | null
+    toolResults?: string | null
     tokensIn?: number
     tokensOut?: number
     latencyMs?: number | null
@@ -26993,8 +26695,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    toolCalls?: NullableJsonNullValueInput | InputJsonValue
-    toolResults?: NullableJsonNullValueInput | InputJsonValue
+    toolCalls?: NullableStringFieldUpdateOperationsInput | string | null
+    toolResults?: NullableStringFieldUpdateOperationsInput | string | null
     tokensIn?: IntFieldUpdateOperationsInput | number
     tokensOut?: IntFieldUpdateOperationsInput | number
     latencyMs?: NullableIntFieldUpdateOperationsInput | number | null
@@ -27007,8 +26709,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    toolCalls?: NullableJsonNullValueInput | InputJsonValue
-    toolResults?: NullableJsonNullValueInput | InputJsonValue
+    toolCalls?: NullableStringFieldUpdateOperationsInput | string | null
+    toolResults?: NullableStringFieldUpdateOperationsInput | string | null
     tokensIn?: IntFieldUpdateOperationsInput | number
     tokensOut?: IntFieldUpdateOperationsInput | number
     latencyMs?: NullableIntFieldUpdateOperationsInput | number | null
@@ -27021,8 +26723,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    toolCalls?: NullableJsonNullValueInput | InputJsonValue
-    toolResults?: NullableJsonNullValueInput | InputJsonValue
+    toolCalls?: NullableStringFieldUpdateOperationsInput | string | null
+    toolResults?: NullableStringFieldUpdateOperationsInput | string | null
     tokensIn?: IntFieldUpdateOperationsInput | number
     tokensOut?: IntFieldUpdateOperationsInput | number
     latencyMs?: NullableIntFieldUpdateOperationsInput | number | null
