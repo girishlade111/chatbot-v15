@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
 
       case 'invoice.paid': {
         const invoice = event.data.object as Stripe.Invoice;
-        const subscriptionId = invoice.subscription as string;
+        const subscriptionId = invoice.parent?.subscription_details?.subscription as string | undefined;
         if (!subscriptionId) break;
 
         const sub = await prisma.subscription.findUnique({ where: { stripeId: subscriptionId } });
@@ -103,7 +103,7 @@ export async function POST(req: NextRequest) {
 
       case 'invoice.payment_failed': {
         const failedInvoice = event.data.object as Stripe.Invoice;
-        const failedSubId = failedInvoice.subscription as string;
+        const failedSubId = failedInvoice.parent?.subscription_details?.subscription as string | undefined;
         if (!failedSubId) break;
 
         await prisma.subscription.update({
