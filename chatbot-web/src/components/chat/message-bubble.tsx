@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import type { Message } from '@/types';
+import { MarkdownRenderer } from '@/components/markdown/markdown-renderer';
 
 interface MessageBubbleProps {
   message: Message;
@@ -31,7 +32,11 @@ export function MessageBubble({ message, isStreaming }: MessageBubbleProps) {
               : 'bg-muted text-foreground rounded-bl-md'
           )}
         >
-          <div className="whitespace-pre-wrap break-words">{message.content}</div>
+          {isUser ? (
+            <div className="whitespace-pre-wrap break-words">{message.content}</div>
+          ) : (
+            <MarkdownRenderer content={message.content} />
+          )}
           {isStreaming && message.role === 'assistant' && !message.content && (
             <div className="flex gap-1 py-1">
               <span className="typing-dot" />
