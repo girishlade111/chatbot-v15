@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth/auth';
-import { stripe, PLANS } from '@/lib/billing/stripe';
+import { stripe } from '@/lib/billing/stripe';
 import { prisma } from '@/lib/db/prisma';
 
 export async function POST(req: NextRequest) {
@@ -19,9 +19,7 @@ export async function POST(req: NextRequest) {
   });
   if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
-  const stripeCustomerId = (user as { stripeCustomerId?: string | null }).stripeCustomerId;
-
-  let customerId = stripeCustomerId;
+  let customerId = user.stripeCustomerId;
   if (!customerId) {
     const customer = await stripe.customers.create({
       email: user.email ?? undefined,

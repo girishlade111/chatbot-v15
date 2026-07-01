@@ -13,8 +13,7 @@ export async function POST(req: NextRequest) {
   const user = await prisma.user.findUnique({ where: { id: session.user.id } });
   if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
-  const stripeCustomerId = (user as { stripeCustomerId?: string | null }).stripeCustomerId;
-  if (!stripeCustomerId) {
+  if (!user.stripeCustomerId) {
     const customer = await stripe.customers.create({
       email: user.email ?? undefined,
       metadata: { userId: user.id },
@@ -31,8 +30,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ url: portalSession.url });
   }
 
-  const portalSession = await stripe.billingPortal.sessions.create({
-    customer: stripeCustomerId,
+    const portalSession = await stripe.billingPortal.sessions.create({
+      customer: user.stripeCustomerId,
     return_url: returnUrl,
   });
 

@@ -11,7 +11,7 @@ export async function GET() {
     prisma.subscription.findUnique({ where: { userId: session.user.id } }),
     prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { credits: true },
+      select: { credits: true, stripeCustomerId: true },
     }),
     prisma.usageLog.aggregate({
       where: {
@@ -42,5 +42,11 @@ export async function GET() {
       creditsTotal: planConfig.credits,
       thisMonthTokens: (thisMonthUsage._sum.tokensIn ?? 0) + (thisMonthUsage._sum.tokensOut ?? 0),
     },
+    plans: Object.entries(PLANS).map(([id, config]) => ({
+      id,
+      name: config.name,
+      credits: config.credits,
+      priceId: config.priceId,
+    })),
   });
 }
