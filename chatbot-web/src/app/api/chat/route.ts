@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
   });
 
   const history = prepareHistory(
-    previousMessages.map(m => ({ role: m.role, content: m.content }))
+    previousMessages.map((m: { role: string; content: string }) => ({ role: m.role, content: m.content }))
   );
 
   const encoder = new TextEncoder();

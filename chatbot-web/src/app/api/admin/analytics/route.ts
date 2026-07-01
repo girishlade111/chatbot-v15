@@ -44,7 +44,7 @@ export async function GET() {
       totalTokensOut: usageStats._sum.tokensOut || 0,
       totalCostUsd: usageStats._sum.costUsd || 0,
     },
-    byModel: modelStats.map(m => ({
+    byModel: modelStats.map((m: any) => ({
       model: m.model,
       requests: m._count.id,
       tokensIn: m._sum.tokensIn || 0,

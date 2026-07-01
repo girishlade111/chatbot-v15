@@ -18,7 +18,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
 
-  const forkIndex = parent.messages.findIndex(m => m.id === forkMessageId);
+  const forkIndex = parent.messages.findIndex((m: { id: string; role: string; content: string; tokensIn?: number | null; tokensOut?: number | null; latencyMs?: number | null; createdAt: Date; }) => m.id === forkMessageId);
   if (forkIndex === -1) {
     return NextResponse.json({ error: 'Message not found' }, { status: 404 });
   }
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       parentId: id,
       tokenCount: 0,
       messages: {
-        create: messagesToCopy.map(m => ({
+        create: messagesToCopy.map((m: { id: string; role: string; content: string; tokensIn?: number | null; tokensOut?: number | null; latencyMs?: number | null; createdAt: Date; }) => ({
           id: m.id,
           role: m.role,
           content: m.content,

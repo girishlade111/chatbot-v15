@@ -105,7 +105,7 @@ export async function* orchestrateChat(userMessage: string, history: ChatMessage
           break;
         }
         case 'error':
-          yield { type: 'error', error: part.error };
+          yield { type: 'error', error: String(part.error) };
           return;
       }
     }

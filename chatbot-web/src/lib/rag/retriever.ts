@@ -36,11 +36,11 @@ export async function retrieveRelevantChunks(
     LIMIT ${topK}
   `;
 
-  return results.map(r => ({
-    content: r.content,
-    documentName: r.document_name,
+  return results.map((r: any) => ({
+    content: r.content as string,
+    documentName: r.document_name as string,
     score: 1 - r.distance,
-    chunkIndex: r.chunk_index,
+    chunkIndex: r.chunk_index as number,
   }));
 }
 
