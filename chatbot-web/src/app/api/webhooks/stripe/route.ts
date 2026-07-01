@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
         const subscriptionId = session.subscription as string;
         const customerId = session.customer as string;
         const priceId = session.metadata?.priceId || session.line_items?.data?.[0]?.price?.id;
-        const plan = priceId ? getPlanByPriceId(priceId) : 'FREE';
+        const plan = priceId ? (getPlanByPriceId(priceId) ?? 'FREE') : 'FREE';
 
         const subscription = await stripeClient.subscriptions.retrieve(subscriptionId);
         const credits = PLANS[plan as keyof typeof PLANS]?.credits ?? PLANS.FREE.credits;
@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
 
         const subscription = await stripeClient.subscriptions.retrieve(subscriptionId);
         const priceId = subscription.items.data[0]?.price?.id;
-        const plan = priceId ? getPlanByPriceId(priceId) : 'FREE';
+        const plan = priceId ? (getPlanByPriceId(priceId) ?? 'FREE') : 'FREE';
         const credits = PLANS[plan as keyof typeof PLANS]?.credits ?? PLANS.FREE.credits;
 
         await prisma.$transaction([
@@ -116,7 +116,7 @@ export async function POST(req: NextRequest) {
       case 'customer.subscription.updated': {
         const updatedSub = event.data.object as Stripe.Subscription;
         const updatedPriceId = updatedSub.items.data[0]?.price?.id;
-        const updatedPlan = updatedPriceId ? getPlanByPriceId(updatedPriceId) : 'FREE';
+        const updatedPlan = updatedPriceId ? (getPlanByPriceId(updatedPriceId) ?? 'FREE') : 'FREE';
 
         await prisma.subscription.update({
           where: { stripeId: updatedSub.id },
