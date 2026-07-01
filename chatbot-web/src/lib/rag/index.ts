@@ -1,3 +1,3 @@
-export { chunkDocument } from './chunker';
-export { generateEmbedding } from './embedder';
-export { searchSimilar, buildRagContext } from './retriever';
+export { chunkText, chunkByTokens } from './chunker';
+export { generateEmbedding, generateEmbeddings } from './embedder';
+export { retrieveRelevantChunks, buildRagContext } from './retriever';

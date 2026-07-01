@@ -1,19 +1,19 @@
 import { createOpenAI } from '@ai-sdk/openai';
 import { createAnthropic } from '@ai-sdk/anthropic';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import type { LanguageModelV1 } from 'ai';
+import type { LanguageModel } from 'ai';
 
 const openai = createOpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const google = createGoogleGenerativeAI({ apiKey: process.env.GOOGLE_API_KEY });
 
-const modelCache = new Map<string, LanguageModelV1>();
+const modelCache = new Map<string, LanguageModel>();
 
-export function getModel(id: string, userApiKey?: string): LanguageModelV1 {
+export function getModel(id: string, userApiKey?: string): LanguageModel {
   const cacheKey = `${id}:${userApiKey || 'default'}`;
   if (modelCache.has(cacheKey)) return modelCache.get(cacheKey)!;
 
-  let model: LanguageModelV1;
+  let model: LanguageModel;
 
   switch (id) {
     case 'gpt-4o':
