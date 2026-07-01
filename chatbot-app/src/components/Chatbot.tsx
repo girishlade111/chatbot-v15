@@ -173,8 +173,12 @@ function renderMarkdown(text: string): (string | JSX.Element)[] {
     const hMatch = html.match(/^(#{1,6})\s+(.+)$/);
     if (hMatch) {
       const level = hMatch[1].length;
-      const Tag = `h${level}` as keyof JSX.IntrinsicElements;
-      elements.push(<Tag key={keyCounter++} className={`mt-3 mb-1 font-bold text-${level === 1 ? '2xl' : level === 2 ? 'xl' : level === 3 ? 'lg' : 'base'}`}>{renderInline(hMatch[2])}</Tag>);
+      const size = level === 1 ? '2xl' : level === 2 ? 'xl' : level === 3 ? 'lg' : 'base';
+      elements.push(
+        <div key={keyCounter++} className={`mt-3 mb-1 font-bold text-${size}`}>
+          {renderInline(hMatch[2])}
+        </div>
+      );
       continue;
     }
 
