@@ -62,7 +62,7 @@ export function FileDropzone({
   const [rejections, setRejections] = useState<FileRejection[]>([]);
 
   const onDrop = useCallback(
-    (accepted: File[], rejected: FileRejected[]) => {
+    (accepted: File[], rejected: FileRejection[]) => {
       setRejections(rejected);
 
       const validated: File[] = [];
