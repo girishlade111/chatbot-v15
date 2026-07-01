@@ -1,1 +1,1 @@
-export { auth, authOptions } from './auth';
+export { auth, handlers, signIn, signOut } from './auth';
