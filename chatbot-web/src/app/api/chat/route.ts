@@ -1,17 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth/auth';
+import { auth } from '@/lib/auth/auth';
 import { prisma } from '@/lib/db/prisma';
 import { orchestrateChat, prepareHistory } from '@/lib/ai/orchestrator';
 import { checkUserRateLimit } from '@/lib/utils/rate-limiter';
 import { TOKEN_COST_PER_MODEL } from '@/lib/constants';
 import { moderateInput } from '@/lib/ai/moderation';
 
-export const runtime = 'edge';
-export const preferredRegion = 'auto';
-
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
