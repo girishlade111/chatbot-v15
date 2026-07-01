@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         const priceId = session.metadata?.priceId || session.line_items?.data?.[0]?.price?.id;
         const plan = priceId ? (getPlanByPriceId(priceId) ?? 'FREE') : 'FREE';
 
-        const subscription = await stripeClient.subscriptions.retrieve(subscriptionId);
+        const stripeSub = await stripeClient.subscriptions.retrieve(subscriptionId);
         const credits = PLANS[plan as keyof typeof PLANS]?.credits ?? PLANS.FREE.credits;
 
         await prisma.$transaction([
@@ -41,17 +41,17 @@ export async function POST(req: NextRequest) {
               stripeId: subscriptionId,
               plan,
               status: 'ACTIVE',
-              currentPeriodStart: new Date(subscription.current_period_start * 1000),
-              currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-              cancelAtPeriodEnd: subscription.cancel_at_period_end,
+              currentPeriodStart: new Date((stripeSub.items.data[0]?.current_period_start ?? 0) * 1000),
+              currentPeriodEnd: new Date((stripeSub.items.data[0]?.current_period_end ?? 0) * 1000),
+              cancelAtPeriodEnd: stripeSub.cancel_at_period_end,
             },
             update: {
               stripeId: subscriptionId,
               plan,
               status: 'ACTIVE',
-              currentPeriodStart: new Date(subscription.current_period_start * 1000),
-              currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-              cancelAtPeriodEnd: subscription.cancel_at_period_end,
+              currentPeriodStart: new Date((stripeSub.items.data[0]?.current_period_start ?? 0) * 1000),
+              currentPeriodEnd: new Date((stripeSub.items.data[0]?.current_period_end ?? 0) * 1000),
+              cancelAtPeriodEnd: stripeSub.cancel_at_period_end,
             },
           }),
           prisma.user.update({
@@ -77,8 +77,8 @@ export async function POST(req: NextRequest) {
         const sub = await prisma.subscription.findUnique({ where: { stripeId: subscriptionId } });
         if (!sub) break;
 
-        const subscription = await stripeClient.subscriptions.retrieve(subscriptionId);
-        const priceId = subscription.items.data[0]?.price?.id;
+        const stripeSub = await stripeClient.subscriptions.retrieve(subscriptionId);
+        const priceId = stripeSub.items.data[0]?.price?.id;
         const plan = priceId ? (getPlanByPriceId(priceId) ?? 'FREE') : 'FREE';
         const credits = PLANS[plan as keyof typeof PLANS]?.credits ?? PLANS.FREE.credits;
 
@@ -88,9 +88,9 @@ export async function POST(req: NextRequest) {
             data: {
               plan,
               status: 'ACTIVE',
-              currentPeriodStart: new Date(subscription.current_period_start * 1000),
-              currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-              cancelAtPeriodEnd: subscription.cancel_at_period_end,
+              currentPeriodStart: new Date((stripeSub.items.data[0]?.current_period_start ?? 0) * 1000),
+              currentPeriodEnd: new Date((stripeSub.items.data[0]?.current_period_end ?? 0) * 1000),
+              cancelAtPeriodEnd: stripeSub.cancel_at_period_end,
             },
           }),
           prisma.user.update({
@@ -123,8 +123,8 @@ export async function POST(req: NextRequest) {
           data: {
             plan: updatedPlan,
             status: updatedSub.status === 'active' ? 'ACTIVE' : updatedSub.status === 'past_due' ? 'PAST_DUE' : 'CANCELED',
-            currentPeriodStart: new Date(updatedSub.current_period_start * 1000),
-            currentPeriodEnd: new Date(updatedSub.current_period_end * 1000),
+            currentPeriodStart: new Date((updatedSub.items.data[0]?.current_period_start ?? 0) * 1000),
+            currentPeriodEnd: new Date((updatedSub.items.data[0]?.current_period_end ?? 0) * 1000),
             cancelAtPeriodEnd: updatedSub.cancel_at_period_end,
           },
         });
