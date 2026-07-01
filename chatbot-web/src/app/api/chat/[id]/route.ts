@@ -31,6 +31,27 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
 
+  if (body.type === 'edit-message') {
+    const { messageId, content } = body as { type: 'edit-message'; messageId: string; content: string };
+
+    await prisma.message.update({
+      where: { id: messageId },
+      data: { content, edited: true, editedAt: Date.now() },
+    });
+
+    const msg = await prisma.message.findUnique({ where: { id: messageId } });
+    if (msg && msg.conversationId === id) {
+      await prisma.message.deleteMany({
+        where: {
+          conversationId: id,
+          createdAt: { gt: msg.createdAt },
+        },
+      });
+    }
+
+    return NextResponse.json({ success: true });
+  }
+
   const updated = await prisma.conversation.update({
     where: { id },
     data: {
