@@ -106,6 +106,82 @@ export const useChatStore = create<ChatState>()(
         }),
       })),
 
+      forkConversation: (sourceId, forkMessageId) => {
+        const source = get().conversations.find(c => c.id === sourceId);
+        if (!source) return null;
+        const forkIndex = source.messages.findIndex(m => m.id === forkMessageId);
+        if (forkIndex === -1) return null;
+
+        const newId = uid();
+        const messagesToCopy = source.messages.slice(0, forkIndex + 1).map(m => ({
+          ...m,
+          id: uid(),
+          conversationId: newId,
+          branchPoint: m.id === forkMessageId,
+        }));
+
+        const branchConv: Conversation = {
+          ...source,
+          id: newId,
+          parentId: sourceId,
+          branchId: uid(),
+          messages: messagesToCopy,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        };
+
+        set(s => ({
+          conversations: [branchConv, ...s.conversations],
+          activeConversationId: newId,
+        }));
+
+        return newId;
+      },
+
+      editMessage: (conversationId, messageId, content) => set(s => ({
+        conversations: s.conversations.map(c => {
+          if (c.id !== conversationId) return c;
+          const msgIndex = c.messages.findIndex(m => m.id === messageId);
+          if (msgIndex === -1) return c;
+          const updatedMessages = c.messages.map((m, i) => {
+            if (m.id === messageId) return { ...m, content, edited: true, editedAt: Date.now() };
+            if (i > msgIndex) return { ...m, staleBranch: true } as Message;
+            return m;
+          });
+          return { ...c, messages: updatedMessages, updatedAt: Date.now() };
+        }),
+      })),
+
+      deleteMessageAndAfter: (conversationId, messageId) => set(s => ({
+        conversations: s.conversations.map(c => {
+          if (c.id !== conversationId) return c;
+          const msgIndex = c.messages.findIndex(m => m.id === messageId);
+          if (msgIndex === -1) return c;
+          return { ...c, messages: c.messages.slice(0, msgIndex), updatedAt: Date.now() };
+        }),
+      })),
+
+      regenerateMessage: (conversationId, messageId) => {
+        const conv = get().conversations.find(c => c.id === conversationId);
+        if (!conv) return;
+        const msgIndex = conv.messages.findIndex(m => m.id === messageId);
+        if (msgIndex < 1) return;
+        // Remove the last assistant message and all messages after the target
+        const kept = conv.messages.slice(0, msgIndex);
+        const lastUserMsg = conv.messages[msgIndex - 1];
+        set(s => ({
+          conversations: s.conversations.map(c =>
+            c.id === conversationId ? { ...c, messages: kept, updatedAt: Date.now() } : c
+          ),
+        }));
+        // Re-trigger the API call via a custom event the hook can listen to
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('regenerate-message', {
+            detail: { conversationId, content: lastUserMsg.content },
+          }));
+        }
+      },
+
       setSettings: (updates) => set(s => ({ settings: { ...s.settings, ...updates } })),
       setIsStreaming: (v) => set({ isStreaming: v }),
       setError: (e) => set({ error: e }),

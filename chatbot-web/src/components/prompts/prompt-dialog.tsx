@@ -124,7 +124,7 @@ export function PromptDialog({ open, onClose, onSave, template, saving }: Prompt
           <div className="space-y-1.5">
             <Label>Visibility</Label>
             <div className="flex items-center gap-2 pt-1">
-              <Switch checked={isPublic} onCheckedChange={setIsPublic} />
+              <Switch checked={isPublic} onChange={e => setIsPublic(e.target.checked)} />
               <span className="text-sm text-muted-foreground">
                 {isPublic ? 'Public (visible to everyone)' : 'Private'}
               </span>
