@@ -60,22 +60,25 @@ export async function* orchestrateChat(userMessage: string, history: ChatMessage
     const tools = getToolDefinitions();
     const hasTools = tools.length > 0;
 
-    const result = streamText({
+    const streamOptions: Record<string, unknown> = {
       model,
       messages: allMessages,
       temperature: options.temperature ?? 0.7,
       topP: options.topP ?? 1,
       maxOutputTokens: options.maxTokens ?? 4096,
-      ...(hasTools && {
-        tools: Object.fromEntries(
-          tools.map(t => [t.name, {
-            description: t.description,
-            parameters: t.parameters as Record<string, unknown>,
-          }])
-        ),
-        maxSteps: 5,
-      }),
-    });
+    };
+
+    if (hasTools) {
+      streamOptions.tools = Object.fromEntries(
+        tools.map(t => [t.name, {
+          description: t.description,
+          parameters: t.parameters,
+        }])
+      );
+      streamOptions.maxSteps = 5;
+    }
+
+    const result = streamText(streamOptions as any);
 
     let fullContent = '';
 
