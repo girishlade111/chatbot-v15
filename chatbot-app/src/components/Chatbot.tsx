@@ -553,7 +553,7 @@ export default function Chatbot() {
         text: title
           ? `Hello! I'm ready to help with "${title}". What would you like to know?`
           : 'Hello! I am your AI assistant powered by Gemini. How can I help you today?',
-        sender: 'bot',
+        sender: 'bot' as const,
         timestamp: Date.now(),
       }],
       createdAt: Date.now(),
@@ -773,7 +773,7 @@ export default function Chatbot() {
     const userMsg: Message = {
       id: uid(),
       text: text,
-      sender: 'user',
+      sender: 'user' as const,
       timestamp: Date.now(),
       ...(selectedFile ? { file: selectedFile } : {}),
     };
@@ -813,7 +813,7 @@ export default function Chatbot() {
       const botMsg: Message = {
         id: uid(),
         text: botText,
-        sender: 'bot',
+        sender: 'bot' as const,
         timestamp: Date.now(),
       };
 
@@ -825,7 +825,7 @@ export default function Chatbot() {
       const errMsg: Message = {
         id: uid(),
         text: `Sorry, I encountered an error: ${err.message || 'Please try again.'}`,
-        sender: 'bot',
+        sender: 'bot' as const,
         timestamp: Date.now(),
       };
       updateMessages(chatId, msgs => [...msgs, errMsg]);
@@ -861,7 +861,7 @@ export default function Chatbot() {
       const botMsg: Message = {
         id: uid(),
         text: botText,
-        sender: 'bot',
+        sender: 'bot' as const,
         timestamp: Date.now(),
       };
 
@@ -872,7 +872,7 @@ export default function Chatbot() {
       const errMsg: Message = {
         id: uid(),
         text: 'Sorry, I encountered an error during regeneration. Please try again.',
-        sender: 'bot',
+        sender: 'bot' as const,
         timestamp: Date.now(),
       };
       updateMessages(activeChatId, msgs2 => [...msgs2, errMsg]);
@@ -890,7 +890,7 @@ export default function Chatbot() {
       const botMsg: Message = {
         id: uid(),
         text: streamingText + '\n\n*(response truncated)*',
-        sender: 'bot',
+        sender: 'bot' as const,
         timestamp: Date.now(),
       };
       updateMessages(activeChatId, msgs => [...msgs, botMsg]);
@@ -1440,7 +1440,7 @@ export default function Chatbot() {
                     message={{
                       id: 'streaming',
                       text: streamingText,
-                      sender: 'bot',
+                      sender: 'bot' as const,
                       timestamp: Date.now(),
                     }}
                     onCopy={copyMessage}
