@@ -32,7 +32,7 @@ export function ChatWindow() {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const activeConv = conversations.find(c => c.id === activeConversationId);
-  const branches = conversations.filter(c => c.parentId === activeConversationId);
+  const branches = activeConversationId ? conversations.filter(c => c.parentId === activeConversationId) : [];
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -71,9 +71,15 @@ export function ChatWindow() {
 
   const handleRegenerate = useCallback((messageId: string) => {
     if (activeConversationId) {
+      const conv = conversations.find(c => c.id === activeConversationId);
+      const msgIndex = conv?.messages.findIndex(m => m.id === messageId) ?? -1;
+      const userMsg = msgIndex > 0 ? conv?.messages[msgIndex - 1] : null;
       regenerateMessage(activeConversationId, messageId);
+      if (userMsg) {
+        setTimeout(() => sendMessage(userMsg.content), 50);
+      }
     }
-  }, [activeConversationId, regenerateMessage]);
+  }, [activeConversationId, regenerateMessage, conversations, sendMessage]);
 
   const messages = activeConv?.messages ?? [];
   const lastAssistantIndex = (() => {
