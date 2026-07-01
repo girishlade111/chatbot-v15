@@ -42,6 +42,7 @@ export interface Conversation {
   archived: boolean;
   folderId?: string;
   parentId?: string;
+  branchId?: string;
   tokenCount: number;
   messages: Message[];
   createdAt: number;
