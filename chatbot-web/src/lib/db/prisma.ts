@@ -6,7 +6,7 @@ const globalForPrisma = globalThis as unknown as { prisma: PrismaClient | undefi
 
 function createPrismaClient() {
   const libsql = createClient({ url: process.env.SQLITE_URL ?? 'file:./dev.db' })
-  const adapter = new PrismaLibSQL(libsql)
+  const adapter = new PrismaLibSql(libsql)
   return new PrismaClient({ adapter })
 }
 
