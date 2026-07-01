@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import { useDropzone, type FileRejection, type FileError } from 'react-dropzone';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';

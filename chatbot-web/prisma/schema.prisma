@@ -27,6 +27,7 @@ model User {
   promptTemplates PromptTemplate[]
   usageLogs       UsageLog[]
   apiKeys         ApiKey[]
+  stripeCustomerId String?  @unique
   subscription    Subscription?
   folders         Folder[]
 
