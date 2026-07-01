@@ -1,5 +1,8 @@
-const { PrismaClient } = require('@/generated/client') as typeof import('@prisma/client');
+const { PrismaClient } = require('@/generated/client');
+type PrismaClientType = InstanceType<typeof PrismaClient>;
 
-const globalForPrisma = globalThis as unknown as { prisma: typeof import('@prisma/client').PrismaClient };
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClientType | undefined };
 
-export const prisma = (globalForPrisma.prisma ?? new PrismaClient()) as any;
+export const prisma: PrismaClientType = globalForPrisma.prisma ?? new PrismaClient({});
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
