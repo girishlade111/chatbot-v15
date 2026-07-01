@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         const priceId = session.metadata?.priceId || session.line_items?.data?.[0]?.price?.id;
         const plan = priceId ? getPlanByPriceId(priceId) : 'FREE';
 
-        const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+        const subscription = await stripeClient.subscriptions.retrieve(subscriptionId);
         const credits = PLANS[plan as keyof typeof PLANS]?.credits ?? PLANS.FREE.credits;
 
         await prisma.$transaction([
@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
         const sub = await prisma.subscription.findUnique({ where: { stripeId: subscriptionId } });
         if (!sub) break;
 
-        const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+        const subscription = await stripeClient.subscriptions.retrieve(subscriptionId);
         const priceId = subscription.items.data[0]?.price?.id;
         const plan = priceId ? getPlanByPriceId(priceId) : 'FREE';
         const credits = PLANS[plan as keyof typeof PLANS]?.credits ?? PLANS.FREE.credits;
