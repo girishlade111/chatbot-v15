@@ -14,6 +14,7 @@ export interface Message {
   editedAt?: number;
   parentId?: string;
   branchPoint?: boolean;
+  staleBranch?: boolean;
   createdAt: number;
 }
 
