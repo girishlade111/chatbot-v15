@@ -69,11 +69,15 @@ export async function processDocument(documentId: string): Promise<void> {
     for (const chunk of chunks) {
       try
       {
-        const embedding = await generateEmbedding(chunk.content);
-        await prisma.chunk.updateMany({
-          where: { documentId, index: chunk.index },
-          data: { embedding },
-        });
+        const chunkRecord = await prisma.chunk.findFirst({ where: { documentId, index: chunk.index } });
+        if (chunkRecord) {
+          const embedding = await generateEmbedding(chunk.content);
+          await prisma.$executeRawUnsafe(
+            `UPDATE "Chunk" SET embedding = $1::vector WHERE id = $2`,
+            `[${embedding.join(',')}]`,
+            chunkRecord.id
+          );
+        }
       } catch (err) {
         console.error(`Embedding failed for chunk ${chunk.index} of document ${documentId}:`, err);
       }

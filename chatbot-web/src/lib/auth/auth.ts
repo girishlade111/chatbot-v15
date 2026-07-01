@@ -27,7 +27,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const passwordHash = await hashPassword(credentials.password as string);
         if (user.passwordHash !== passwordHash) return null;
 
-        return { id: user.id, email: user.email, name: user.name, image: user.image, role: user.role };
+        return { id: user.id, email: user.email, name: user.name, image: user.image, role: user.role as 'user' | 'admin' } as any;
       },
     }),
     ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
