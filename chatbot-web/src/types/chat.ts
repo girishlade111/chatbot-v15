@@ -123,7 +123,7 @@ export interface ChatSettings {
 }
 
 export interface StreamChunk {
-  type: 'text' | 'tool-call' | 'tool-result' | 'error' | 'done';
+  type: 'text' | 'tool-call' | 'tool-result' | 'error' | 'usage' | 'done';
   content?: string;
   toolCallId?: string;
   toolName?: string;

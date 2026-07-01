@@ -31,6 +31,7 @@ export function useChat() {
 
     const userMsg: Message = {
       id: uid(),
+      conversationId: convId,
       role: 'user',
       content,
       createdAt: Date.now(),
@@ -40,6 +41,7 @@ export function useChat() {
     const assistantId = uid();
     const assistantMsg: Message = {
       id: assistantId,
+      conversationId: convId,
       role: 'assistant',
       content: '',
       createdAt: Date.now(),
@@ -99,22 +101,22 @@ export function useChat() {
             const chunk: StreamChunk = JSON.parse(json);
             switch (chunk.type) {
               case 'text':
-                appendToLastMessage(convId, chunk.content);
+                appendToLastMessage(convId, chunk.content ?? '');
                 break;
               case 'tool-call':
-                appendToLastMessage(convId, `\n\n*Using ${chunk.name}...*\n\n`);
+                appendToLastMessage(convId, `\n\n*Using ${chunk.toolName ?? 'tool'}...*\n\n`);
                 break;
               case 'error':
-                setError(chunk.content);
-                addToast(chunk.content, 'error');
+                setError(chunk.error ?? chunk.content ?? '');
+                addToast(chunk.error ?? chunk.content ?? '', 'error');
                 break;
               case 'usage':
-                updateMessage(convId, assistantId, { tokensIn: chunk.tokensIn, tokensOut: chunk.tokensOut });
+                updateMessage(convId, assistantId, { tokensIn: chunk.usage?.promptTokens, tokensOut: chunk.usage?.completionTokens });
                 break;
               case 'done':
                 updateConversation(convId, {
-                  title: chunk.title || content.slice(0, 50),
-                  tokenCount: (useChatStore.getState().conversations.find(c => c.id === convId)?.tokenCount || 0) + (chunk.tokensIn || 0) + (chunk.tokensOut || 0),
+                  title: content.slice(0, 50),
+                  tokenCount: (useChatStore.getState().conversations.find(c => c.id === convId)?.tokenCount || 0) + (chunk.usage?.promptTokens ?? 0) + (chunk.usage?.completionTokens ?? 0),
                 });
                 break;
             }
