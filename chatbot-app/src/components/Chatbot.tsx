@@ -517,7 +517,7 @@ export default function Chatbot() {
   }, [activeChat?.messages, streamingText]);
 
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
+    const handler = (e: globalThis.KeyboardEvent) => {
       if (e.key === 'Escape') {
         setSidebarOpen(false);
         setSettingsOpen(false);
