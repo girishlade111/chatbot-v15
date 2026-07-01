@@ -140,7 +140,7 @@ export async function POST(req: NextRequest) {
           data: {
             plan: 'FREE',
             status: 'CANCELED',
-            currentPeriodEnd: new Date(deletedSub.current_period_end * 1000),
+            currentPeriodEnd: new Date((deletedSub.items.data[0]?.current_period_end ?? 0) * 1000),
             cancelAtPeriodEnd: false,
           },
         });
