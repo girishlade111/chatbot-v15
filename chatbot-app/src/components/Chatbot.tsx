@@ -570,20 +570,21 @@ export default function Chatbot() {
     setChats(prev => {
       const next = prev.filter(c => c.id !== id);
       if (next.length === 0) {
-        const fresh = {
-          id: uid(),
-          title: 'New Chat',
-          messages: [{
-            id: uid(),
-            text: 'Hello! I am your AI assistant powered by Gemini. How can I help you today?',
-            sender: 'bot',
-            timestamp: Date.now(),
-          }],
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
-        };
-        setActiveChatId(fresh.id);
-        return [fresh];
+    const fresh: ChatSession = {
+      id: uid(),
+      title: 'New Chat',
+      messages: [{
+        id: uid(),
+        text: 'Hello! I am your AI assistant powered by Gemini. How can I help you today?',
+        sender: 'bot' as const,
+        timestamp: Date.now(),
+      }],
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    };
+    setChats([fresh]);
+    setActiveChatId(fresh.id);
+    return [fresh];
       }
       if (activeChatId === id) setActiveChatId(next[0].id);
       return next;
@@ -591,13 +592,13 @@ export default function Chatbot() {
   }, [activeChatId]);
 
   const clearAllChats = useCallback(() => {
-    const fresh = {
+    const fresh: ChatSession = {
       id: uid(),
       title: 'New Chat',
       messages: [{
         id: uid(),
         text: 'Hello! I am your AI assistant powered by Gemini. How can I help you today?',
-        sender: 'bot',
+        sender: 'bot' as const,
         timestamp: Date.now(),
       }],
       createdAt: Date.now(),
