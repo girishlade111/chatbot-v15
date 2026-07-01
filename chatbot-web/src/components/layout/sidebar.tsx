@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useMemo } from 'react';
+import Link from 'next/link';
 
 export function Sidebar() {
   const { conversations, activeConversationId, setActiveConversation, createConversation, deleteConversation, updateConversation } = useChatStore();
@@ -87,6 +88,18 @@ export function Sidebar() {
               </div>
             </button>
           ))}
+        </div>
+
+        <Separator />
+
+        <div className="p-2">
+          <Link
+            href="/billing"
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground transition-colors"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 19a6 6 0 0 0-12 0" /></svg>
+            Billing
+          </Link>
         </div>
 
         <Separator />
