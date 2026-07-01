@@ -11,12 +11,16 @@ interface ChatState {
   error: string | null;
 
   setActiveConversation: (id: string) => void;
-  createConversation: () => string;
+  createConversation: (parentId?: string) => string;
   deleteConversation: (id: string) => void;
   updateConversation: (id: string, data: Partial<Conversation>) => void;
   addMessage: (conversationId: string, message: Message) => void;
   updateMessage: (conversationId: string, messageId: string, updates: Partial<Message>) => void;
   appendToLastMessage: (conversationId: string, text: string) => void;
+  forkConversation: (sourceId: string, forkMessageId: string) => string | null;
+  editMessage: (conversationId: string, messageId: string, content: string) => void;
+  deleteMessageAndAfter: (conversationId: string, messageId: string) => void;
+  regenerateMessage: (conversationId: string, messageId: string) => void;
   setSettings: (settings: Partial<ChatSettings>) => void;
   setIsStreaming: (v: boolean) => void;
   setError: (e: string | null) => void;
