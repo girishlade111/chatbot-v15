@@ -36,7 +36,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
     await prisma.message.update({
       where: { id: messageId },
-      data: { content, edited: true, editedAt: Date.now() },
+      data: { content, edited: true, editedAt: new Date() },
     });
 
     const msg = await prisma.message.findUnique({ where: { id: messageId } });
