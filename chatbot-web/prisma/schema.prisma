@@ -8,8 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// The raw vector value — stored as JSON string in dev (no pgvector)
-type EmbeddingVector = String
+
 
 model User {
   id            String   @id @default(uuid()) @db.Uuid
@@ -209,7 +208,7 @@ model Chunk {
   documentId String  @db.Uuid
   index      Int
   content    String  @db.Text
-  embedding  EmbeddingVector?
+  embedding  String?
 
   document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
 
